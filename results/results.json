@@ -1,11 +1,11 @@
 {
-  "observable_estimate": -0.43243243243243246,
-  "error_bound_low": -0.9021645030338068,
-  "error_bound_high": 0.03729963816894183,
-  "quantum_runtime_sec": 0.009270191192626953,
-  "classical_runtime_sec": 0.12278270721435547,
-  "hardware": "aer_simulator",
+  "observable_estimate": 0.017822265625,
+  "error_bound_low": -0.482177734375,
+  "error_bound_high": 0.517822265625,
+  "quantum_runtime_sec": 0.1109619140625,
+  "classical_runtime_sec": 0.0217132568359375,
+  "hardware": "aer_simulator_matrix_product_state",
   "mode": "simulation",
-  "qubits": 10,
-  "timestamp": "2025-12-05T08:30:48.245533"
+  "qubits": 70,
+  "timestamp": "2025-12-05T13:05:52.615930"
 }

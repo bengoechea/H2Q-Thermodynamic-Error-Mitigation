@@ -49,7 +49,15 @@ def run_experiment(mode='simulation', shots=1024, backend_name=None, num_qubits=
     # For simulation of large circuits, we must ensure no coupling map is enforced
     # if the backend reports a default one (which Aer sometimes does based on system limits).
     if mode == 'simulation':
-        t_qc = transpile(qc, backend, optimization_level=1, coupling_map=None)
+        # For simulation, use minimal transpilation to avoid coupling map restrictions
+        # Large circuits (70+ qubits) may exceed simulator's default coupling map
+        try:
+            t_qc = transpile(qc, backend, optimization_level=0, coupling_map=None)
+        except Exception as e:
+            # If transpilation fails, try without any optimization
+            print(f"Transpilation warning: {e}")
+            print("Attempting direct execution without transpilation...")
+            t_qc = qc  # Use circuit directly
     else:
         t_qc = transpile(qc, backend, optimization_level=1)
     
