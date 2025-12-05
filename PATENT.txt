@@ -1,0 +1,5 @@
+Patent: US application 63/927,371
+Full details: https://kenmendoza.com/patents
+
+This repository and all underlying implementations are patent-protected.
+Contact ken@kenmendoza.com for collaboration or licensing.
