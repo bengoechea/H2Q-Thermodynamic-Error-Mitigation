@@ -1,0 +1,117 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE and editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.clinerules/
+.cursor/
+.kilocode/
+.roo/
+.specstory/
+.windsurf/
+.kiro/
+.qoder/
+.augment/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Testing
+test/
+tests/
+*_test.py
+*_tests.py
+test_*.py
+tests_*.py
+pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Internal evaluation and analysis scripts (not for public repo)
+evaluate_claims.py
+derive_h2q_theoretical_slope.py
+create_visualization.py
+create_overlay_visualization.py
+visualize_hysteresis_regime.py
+quick_hardware_validation.py
+
+# Internal documentation (analysis files)
+CLAIMS_EVALUATION_REPORT.md
+IBM_QUANTUM_ADVANTAGE_ASSESSMENT.md
+IBM_QUANTUM_ADVANTAGE_REPO_EVALUATION.md
+IBM_LINKEDIN_COMPARISON.md
+H2Q_HYSTERESIS_ANALYSIS.md
+PLOT_EXPLANATION.md
+QUICK_HARDWARE_VALIDATION_GUIDE.md
+RESULTS.md
+AGENTS.md
+LEGAL_EXPERT_ANALYSIS.md
+LICENSE_ANALYSIS.md
+PERFORMANCE_OVERLAY_ANALYSIS.md
+VISUALIZATION_ANALYSIS_SUMMARY.md
+ESTIMATED_PERFORMANCE_POLICY.md
+Based on the H²Q Claims Evaluation Repor.py
+
+# Local/backup files
+*.local
+README.md.local
+requirements.txt.local
+results.md.local
+
+# Generated visualizations (can be regenerated)
+# Note: Performance comparison visualizations are included in repo for documentation
+# *.png
+# h2q_*.png
+
+# Results (keep structure but ignore generated data)
+results/claims_evaluation.json
+results/h2q_theoretical_model.json
+# Keep results.json as example but ignore regenerated ones
+# results/results.json
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db

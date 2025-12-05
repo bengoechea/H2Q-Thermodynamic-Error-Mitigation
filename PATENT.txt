@@ -1,5 +1,15 @@
 Patent: US application 63/927,371
 Full details: https://kenmendoza.com/patents
 
-This repository and all underlying implementations are patent-protected.
-Contact ken@kenmendoza.com for collaboration or licensing.
+This repository implements patent-pending thermodynamic error mitigation
+methods. Patent rights are licensed under the Apache License 2.0, subject
+to the license terms and termination provisions.
+
+The Apache License 2.0 grants patent rights to users of this software,
+with the following provisions:
+- Patent license is granted for use of the software
+- Patent license terminates if user files patent litigation
+- Patent holder retains ability to enforce patents
+
+For commercial licensing or collaboration inquiries, contact:
+ken@kenmendoza.com

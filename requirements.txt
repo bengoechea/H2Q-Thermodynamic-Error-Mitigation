@@ -1,7 +1,10 @@
-qiskit
-numpy
-scipy
-matplotlib
-jupyter
-ipykernel
-pandas
+qiskit>=1.0.0
+qiskit-ibm-runtime>=0.22.0
+qiskit-aer>=0.14.0
+numpy>=1.21.0
+scipy>=1.7.0
+matplotlib>=3.5.0
+jupyter>=1.0.0
+ipykernel>=6.0.0
+pandas>=1.3.0
+python-dotenv>=1.0.0
