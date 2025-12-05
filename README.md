@@ -44,7 +44,7 @@ When |H−S| < ε, the system admits efficient quantum representation—this cri
 ## Repository Structure
 
 | Folder/File | Purpose |
-|-------------|---------|
+|-------------|----------|
 | `/src/` | Core implementation (Python, Qiskit, H²Q modules) |
 | `/experiments/` | Jupyter notebooks for demos and validation |
 | `/data/` | Raw measurement data and calibration files |
