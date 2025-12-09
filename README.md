@@ -1,7 +1,9 @@
 # H²Q Thermodynamic Error Mitigation
 
-**Patent Reference:** US Provisional Application 63/927,371 (Filed Nov 29, 2025)  
-**Patent Details:** https://kenmendoza.com/patents
+**Patent Reference:** US Provisional Applications 1) 63/927,371 (Filed Nov 29, 2025)  
+2) 63/933,465 filed (Filed Dec 8, 2025)  
+
+**Patent Details:** https://kenmendoza.com/patents (coming soon)
 
 ## Overview
 
@@ -18,6 +20,7 @@ H²Q implements **thermodynamic error mitigation** for quantum computing, treati
 | **Cross-Code Improvement** | 895.72% avg | Multiple codes | vs. unmitigated baseline |
 | **Hardware Runs** | 15/15 successful | ibm_fez, ibm_torino | 100% reproducibility |
 | **τ-Holevo χ Correlation** | r = 0.434 | Hardware-validated | Dwell time ↔ channel capacity |
+Note: Backends were selected from those available within IBM’s free 10-minute access window during each run.
 
 ### Quantum Advantage Tracker Submission
 
@@ -32,7 +35,7 @@ Implementation and artifacts for **operator_loschmidt_echo_70x1872** are located
 
 ## Current Status & Roadmap
 
-### ✅ Validated (December 2024)
+### ✅ Validated (December 2025)
 - **QEC Performance**: 79.7% false positive reduction on IBM Eagle r3/Heron processors
 - **Hardware Validation**: 15/15 runs across ibm_fez (127-qubit) and ibm_torino backends
 - **Cross-Code Universality**: 895.72% improvement across multiple QEC codes
