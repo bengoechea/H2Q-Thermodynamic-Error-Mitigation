@@ -21,6 +21,41 @@ H²Q implements **thermodynamic error mitigation** for quantum computing, treati
 
 **Primary Job ID:** `d4lutmiv0j9c73e5nvt0`
 
+
+## Current Status & Roadmap
+
+### ✅ Validated (December 2024)
+- **QEC Performance**: 79.7% false positive reduction on IBM Eagle r3/Heron processors
+- **Hardware Validation**: 15/15 runs across ibm_fez (127-qubit) and ibm_torino backends
+- **Cross-Code Universality**: 895.72% improvement across multiple QEC codes
+- **Statistical Rigor**: 15 independent hardware runs with 100% reproducibility
+
+### 🔄 In Progress / Planned
+**Phase 1 (Critical for full advantage claim):**
+- [ ] Baseline method comparisons (ZNE, CDR, TEM, NRE)
+- [ ] VQE H₂ circuit validation (chemistry workload)
+- [ ] Ground truth simulation comparisons
+- [ ] Higher shot counts (8192-16384 vs current 4096)
+
+**Phase 2 (Publication readiness):**
+- [ ] Multi-circuit benchmark suite (QAOA, random circuits)
+- [ ] Extended statistical validation (20+ runs minimum)
+- [ ] Utility-scale demonstrations (100+ qubit circuits)
+
+### ⚠️ Current Limitations
+**This repository demonstrates:**
+- Control-layer improvements for quantum error correction
+- Hardware-agnostic approach applicable to multiple platforms
+- Measurable improvements in QEC-specific metrics
+
+**This repository does NOT yet claim:**
+- Full "quantum advantage" by IBM/QOBLIB standards
+- Direct comparison to industry-standard error mitigation (ZNE/CDR)
+- Performance validation across diverse circuit types (VQE, QAOA, optimization)
+- Utility-scale (100+ qubit) demonstrations
+
+**Status**: This is a **control-layer infrastructure contribution** toward quantum advantage, not a completed advantage demonstration.
+
 ## Method
 
 The H²Q approach applies thermodynamic error mitigation by:
