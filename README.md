@@ -19,6 +19,14 @@ H²Q implements **thermodynamic error mitigation** for quantum computing, treati
 | **Hardware Runs** | 15/15 successful | ibm_fez, ibm_torino | 100% reproducibility |
 | **τ-Holevo χ Correlation** | r = 0.434 | Hardware-validated | Dwell time ↔ channel capacity |
 
+### Quantum Advantage Tracker Submission
+
+Implementation and artifacts for **operator_loschmidt_echo_70x1872** are located in:
+- `/experiments/` - Circuit implementations and execution notebooks
+- `/results/` - Raw measurement data and analysis outputs
+- Hardware job IDs and validation metrics are cross-referenced in [HARDWARE_VALIDATION.md](HARDWARE_VALIDATION.md)
+
+
 **Primary Job ID:** `d4lutmiv0j9c73e5nvt0`
 
 
