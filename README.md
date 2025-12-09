@@ -153,6 +153,10 @@ Apache License 2.0 with patent grant. See LICENSE and PATENT.txt.
 
 For commercial licensing: ken@kenmendoza.com
 
+## Author
+
+For more information about the project author, see the [author biography documentation](docs/AUTHOR_BIO.md).
+
 ## Contact
 
 **Lead:** Kenneth Mendoza  
