@@ -1,7 +1,9 @@
 # H²Q Thermodynamic Error Mitigation
 
-**Patent Reference:** US Provisional Application 63/927,371 (Filed Nov 29, 2025)  
-**Patent Details:** https://kenmendoza.com/patents
+**Patent Reference:** US Provisional Applications 1) 63/927,371 (Filed Nov 29, 2025)  
+2) 63/933,465 filed (Filed Dec 8, 2025)  
+
+**Patent Details:** https://kenmendoza.com/patents (coming soon)
 
 ## Overview
 
@@ -18,8 +20,52 @@ H²Q implements **thermodynamic error mitigation** for quantum computing, treati
 | **Cross-Code Improvement** | 895.72% avg | Multiple codes | vs. unmitigated baseline |
 | **Hardware Runs** | 15/15 successful | ibm_fez, ibm_torino | 100% reproducibility |
 | **τ-Holevo χ Correlation** | r = 0.434 | Hardware-validated | Dwell time ↔ channel capacity |
+Note: Backends were selected from those available within IBM’s free 10-minute access window during each run.
+
+### Quantum Advantage Tracker Submission
+
+Implementation and artifacts for **operator_loschmidt_echo_70x1872** are located in:
+- `/experiments/` - Circuit implementations and execution notebooks
+- `/results/` - Raw measurement data and analysis outputs
+- Hardware job IDs and validation metrics are cross-referenced in [HARDWARE_VALIDATION.md](HARDWARE_VALIDATION.md)
+
 
 **Primary Job ID:** `d4lutmiv0j9c73e5nvt0`
+
+
+## Current Status & Roadmap
+
+### ✅ Validated (December 2025)
+- **QEC Performance**: 79.7% false positive reduction on IBM Eagle r3/Heron processors
+- **Hardware Validation**: 15/15 runs across ibm_fez (127-qubit) and ibm_torino backends
+- **Cross-Code Universality**: 895.72% improvement across multiple QEC codes
+- **Statistical Rigor**: 15 independent hardware runs with 100% reproducibility
+
+### 🔄 In Progress / Planned
+**Phase 1 (Critical for full advantage claim):**
+- [ ] Baseline method comparisons (ZNE, CDR, TEM, NRE)
+- [ ] VQE H₂ circuit validation (chemistry workload)
+- [ ] Ground truth simulation comparisons
+- [ ] Higher shot counts (8192-16384 vs current 4096)
+
+**Phase 2 (Publication readiness):**
+- [ ] Multi-circuit benchmark suite (QAOA, random circuits)
+- [ ] Extended statistical validation (20+ runs minimum)
+- [ ] Utility-scale demonstrations (100+ qubit circuits)
+
+### ⚠️ Current Limitations
+**This repository demonstrates:**
+- Control-layer improvements for quantum error correction
+- Hardware-agnostic approach applicable to multiple platforms
+- Measurable improvements in QEC-specific metrics
+
+**This repository does NOT yet claim:**
+- Full "quantum advantage" by IBM/QOBLIB standards
+- Direct comparison to industry-standard error mitigation (ZNE/CDR)
+- Performance validation across diverse circuit types (VQE, QAOA, optimization)
+- Utility-scale (100+ qubit) demonstrations
+
+**Status**: This is a **control-layer infrastructure contribution** toward quantum advantage, not a completed advantage demonstration.
 
 ## Method
 
@@ -117,6 +163,10 @@ Apache License 2.0 with patent grant. See LICENSE and PATENT.txt.
 **Patent Notice:** This software implements methods covered by U.S. Patent Application 63/927,371. Patent rights are granted under Apache 2.0, subject to license termination provisions.
 
 For commercial licensing: ken@kenmendoza.com
+
+## Author
+
+For more information about the project author, see the [author biography documentation](docs/AUTHOR_BIO.md).
 
 ## Contact
 

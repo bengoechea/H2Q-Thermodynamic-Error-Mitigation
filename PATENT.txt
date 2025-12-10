@@ -1,5 +1,17 @@
-Patent: US application 63/927,371
-Full details: https://kenmendoza.com/patents
+QUANTUM PATENTS:
+
+Patent 1 (Foundation): US application 63/927,371
+Title: Methods and Systems for Hysteresis-Stabilized Quantum Error Correction
+Filed: November 29, 2025
+Key Innovation: Hysteresis-stabilized syndrome decoding with 1.618 threshold ratio
+
+Patent 2 (Extension): US application 63/933,465  
+Title: Universal Dwell-Time Intelligence Using Attention-Hysteresis Fusion
+Filed: December 8, 2025
+Claims Priority: From 63/927,371 (Patent 1)
+Key Innovation: Universal Processing Module I_φ(A,Q,K,V|H) with attention-hysteresis fusion
+Claims: 61 total (16 independent, 45 dependent)
+Figures: 15 (FIGS 1-15)Full details: https://kenmendoza.com/patents
 
 This repository implements patent-pending thermodynamic error mitigation
 methods. Patent rights are licensed under the Apache License 2.0, subject

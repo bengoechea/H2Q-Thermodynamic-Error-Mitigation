@@ -1,5 +1,25 @@
 #!/usr/bin/env python3
 """
+DISCLAIMER: Current Status & Limitations (December 2024)
+
+This analysis compares H²QEC + Alpha hardware validation results (15 runs on IBM 
+Eagle/Heron processors) against representative industry metrics. 
+
+VALIDATED:
+- QEC syndrome filtering: 79.7% false-positive reduction
+- Cross-code universality: 895.72% improvement
+- Hardware: ibm_fez (127-qubit), ibm_torino
+
+MISSING (Acknowledged Future Work):
+- Direct ZNE/CDR baseline runs (no head-to-head hardware comparison yet)
+- VQE H₂, QAOA circuits (only QEC codes tested)
+- Ground truth simulation (noise quantification vs ideal)
+- Utility-scale (100+ qubit) demonstrations
+
+This is a control-layer infrastructure contribution toward quantum advantage,
+not a completed advantage demonstration. Metrics are aligned with IBM QOBLIB
+evaluation methodology but do not constitute official QOBLIB problem instances.
+
 Competitive Analysis: H2QEC + Alpha Integration vs. State-of-the-Art
 Analyzes value-add of 5-tuple hysteresis error correction with alpha integration
 compared to competitors (IBM, Google, etc.) on fidelity and coherence metrics.
