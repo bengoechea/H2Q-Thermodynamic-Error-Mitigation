@@ -1,0 +1,48 @@
+{
+  "metadata": {
+    "timestamp": "2025-12-06T01:08:56.510966",
+    "circuit": "vqe_h2_4q",
+    "backend": "ibm_fez",
+    "shots": 4096,
+    "n_runs": 1,
+    "observable": "H\u2082 energy (parity)",
+    "method": "H2Q Thermodynamic Error Mitigation",
+    "patent": "US Provisional 63/927,371"
+  },
+  "results": {
+    "raw": {
+      "mean": 0.46826171875,
+      "std": 0.0,
+      "std_error": 0.0,
+      "ci_lower": 0.46826171875,
+      "ci_upper": 0.46826171875,
+      "all_values": [
+        0.46826171875
+      ]
+    },
+    "mitigated": {
+      "mean": 1.0,
+      "std": 0.0,
+      "std_error": 0.0,
+      "ci_lower": 1.0,
+      "ci_upper": 1.0,
+      "all_values": [
+        1.0
+      ]
+    },
+    "kept_fraction": {
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "entropy_reduction": {
+      "mean": 0.0,
+      "std": 0.0
+    },
+    "n_runs": 1
+  },
+  "h2q_config": {
+    "theta_on": 0.8,
+    "theta_off": 0.2,
+    "tau": 10
+  }
+}

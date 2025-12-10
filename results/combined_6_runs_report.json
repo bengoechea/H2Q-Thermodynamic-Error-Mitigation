@@ -1,0 +1,54 @@
+{
+  "metadata": {
+    "timestamp": "2025-12-05T23:19:43.919550",
+    "analysis_type": "Combined Statistical Validation (6 runs)",
+    "circuit": "49Q_L3",
+    "backend": "ibm_fez",
+    "shots_per_run": 1024,
+    "n_runs": 6,
+    "total_shots": 6144,
+    "observable": "Z_52 Z_59 Z_72"
+  },
+  "raw_statistics": {
+    "mean": 0.0107421875,
+    "std_dev": 0.01801751196210752,
+    "std_error": 0.007355618456942597,
+    "ci_95_lower": -0.008166031702484776,
+    "ci_95_upper": 0.029650406702484776,
+    "ci_width": 0.03781643840496955,
+    "individual_values": [
+      0.009765625,
+      0.001953125,
+      0.041015625,
+      -0.01171875,
+      0.00390625,
+      0.01953125
+    ]
+  },
+  "mitigated_statistics": {
+    "mean": 0.0107421875,
+    "std_dev": 0.01801751196210752,
+    "std_error": 0.007355618456942597,
+    "ci_95_lower": -0.008166031702484776,
+    "ci_95_upper": 0.029650406702484776,
+    "ci_width": 0.03781643840496955,
+    "individual_values": [
+      0.009765625,
+      0.001953125,
+      0.041015625,
+      -0.01171875,
+      0.00390625,
+      0.01953125
+    ]
+  },
+  "improvement": {
+    "mean_difference": 0.0,
+    "error_reduction_percent": 0.0,
+    "ci_width_reduction_percent": 0.0
+  },
+  "comparison_with_5_runs": {
+    "ci_width_5_runs": 0.048575,
+    "ci_width_6_runs": 0.03781643840496955,
+    "width_reduction_percent": 22.148351199239215
+  }
+}

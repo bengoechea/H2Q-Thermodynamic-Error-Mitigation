@@ -1,0 +1,23 @@
+{
+  "circuit_model": "operator_loschmidt_echo_49q_l3",
+  "observable": "Z_52 Z_59 Z_72",
+  "backend": "ibm_fez",
+  "shots_per_run": 8192,
+  "n_runs": 1,
+  "result_unmitigated": {
+    "value": -0.001953125,
+    "error_lower": 0.0,
+    "error_upper": 0.0
+  },
+  "result_h2q_mitigated": {
+    "value": -0.001953125,
+    "error_lower": 0.0,
+    "error_upper": 0.0
+  },
+  "improvement": {
+    "description": "H2Q thermodynamic error mitigation",
+    "kept_fraction": 1.0,
+    "entropy_reduction_bits": 0.0
+  },
+  "timestamp": "2025-12-06T00:22:11.330441"
+}

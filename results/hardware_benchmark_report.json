@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "timestamp": "2025-12-05T18:57:22.361895",
+    "job_id": "d4poj63her1c73bagpa0",
+    "backend": "ibm_fez",
+    "circuit": "49Q_L3 (operator_loschmidt_echo)",
+    "shots": 512,
+    "observable": "Z_52 Z_59 Z_72",
+    "method": "H2Q Thermodynamic Error Mitigation",
+    "patent": "US Provisional 63/927,371"
+  },
+  "raw_results": {
+    "observable_value": 0.0,
+    "error_bar": 0.04419417382415922,
+    "entropy_bits": 9.0,
+    "num_states": 512,
+    "max_probability": 0.001953125
+  },
+  "mitigated_results": {
+    "observable_value": 0.0,
+    "error_bar": 0.04419417382415922,
+    "entropy_bits": 9.0,
+    "num_states": 512,
+    "max_probability": 0.001953125
+  },
+  "improvement": {
+    "observable_enhancement": 0.0,
+    "error_reduction_percent": 0.0,
+    "entropy_reduction_bits": 0.0,
+    "entropy_reduction_percent": 0.0,
+    "states_filtered": 0,
+    "states_filtered_percent": 0.0,
+    "kept_fraction": 1.0
+  },
+  "h2q_parameters": {
+    "theta_on": 0.8,
+    "theta_off": 0.2,
+    "tau": 10
+  }
+}

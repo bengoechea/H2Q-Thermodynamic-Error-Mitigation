@@ -1,0 +1,24 @@
+{
+  "8192_shot_run": {
+    "observable": -0.001953125,
+    "unique_bitstrings": 8192,
+    "kept_fraction": 1.0,
+    "entropy_reduction": 0.0,
+    "distribution": "uniform"
+  },
+  "comparison_with_6_runs": {
+    "six_run_mean": 0.0107421875,
+    "six_run_ci": [
+      -0.008166031702484776,
+      0.029650406702484776
+    ],
+    "difference": -0.0126953125,
+    "within_ci": true
+  },
+  "findings": {
+    "uniform_distribution_persists": true,
+    "no_filtering_occurred": true,
+    "observable_consistent": true,
+    "interpretation": "Circuit produces uniform distribution or noise masks structure"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "metadata": {
+    "timestamp": "2025-12-05T21:51:57.587500",
+    "analysis_type": "Statistical Validation (5 runs)",
+    "circuit": "49Q_L3",
+    "backend": "ibm_fez",
+    "shots_per_run": 1024,
+    "n_runs": 5,
+    "observable": "Z_52 Z_59 Z_72"
+  },
+  "raw_statistics": {
+    "mean": 0.008984375,
+    "std_dev": 0.019560524935241064,
+    "std_error": 0.008747732686155738,
+    "ci_95_lower": -0.01530322459805589,
+    "ci_95_upper": 0.03327197459805589,
+    "individual_values": [
+      0.009765625,
+      0.001953125,
+      0.041015625,
+      -0.01171875,
+      0.00390625
+    ],
+    "coefficient_of_variation": 217.71714710529187
+  },
+  "mitigated_statistics": {
+    "mean": 0.008984375,
+    "std_dev": 0.019560524935241064,
+    "std_error": 0.008747732686155738,
+    "ci_95_lower": -0.01530322459805589,
+    "ci_95_upper": 0.03327197459805589,
+    "individual_values": [
+      0.009765625,
+      0.001953125,
+      0.041015625,
+      -0.01171875,
+      0.00390625
+    ],
+    "coefficient_of_variation": 217.71714710529187
+  },
+  "improvement": {
+    "mean_difference": 0.0,
+    "error_reduction_percent": 0.0,
+    "std_reduction_percent": 0.0,
+    "ci_width_reduction_percent": 0.0,
+    "reproducibility_improvement": 0.0
+  },
+  "statistical_test": {
+    "test_type": "paired t-test",
+    "t_statistic": NaN,
+    "p_value": NaN,
+    "significant": false
+  },
+  "mitigation_metrics": {
+    "kept_fraction_mean": 1.0,
+    "kept_fraction_std": 0.0,
+    "entropy_reduction_mean": 0.0,
+    "entropy_reduction_std": 0.0
+  }
+}
