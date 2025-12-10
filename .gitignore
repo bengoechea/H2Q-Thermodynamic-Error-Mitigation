@@ -135,10 +135,19 @@ combine_*.py
 src/h2q_thermo.py
 src/run_experiment.py
 
+# Internal social media content (not for public repo)
+social-media/
+
 # Internal documentation files
 IBM_QUANTUM_RUNS_DOCUMENTATION.md
 BENCHMARK_READINESS_CHECKLIST.md
 REPO_REVIEW_ALREADY_PUBLIC.md
+
+# Attorney-client privileged legal documents (must not be in public repo)
+circuits/SUBMISSION_FILES/COOLEY_LEGAL_REVIEW.md
+circuits/SUBMISSION_FILES/COOLEY_CHECK_SUMMARY.md
+*COOLEY*.md
+*LEGAL_REVIEW*.md
 
 # Local/backup files
 *.local
