@@ -1,0 +1,306 @@
+{
+  "name": "H²QEC - Hysteretic Quantum Error Correction",
+  "version": "1.0",
+  "description": "Quantum error correction circuits with hysteretic syndrome filtering achieving 79.7% false positive reduction",
+  "institution": "Independent Research, Ken Mendoza",
+  "patent_reference": "US Provisional Application 63/927,371 (Filed Nov 29, 2025)",
+  "hardware_validated": [
+    "ibm_fez (156-qubit)",
+    "ibm_torino (133-qubit Heron r2)"
+  ],
+  "validation_results": {
+    "false_positive_reduction": "79.7%",
+    "statistical_significance": {
+      "cohens_d": 10.59,
+      "p_value": "< 0.0001"
+    },
+    "primary_job_id": "d4lutmiv0j9c73e5nvt0",
+    "hardware_runs": "15/15 successful (100% reproducibility)"
+  },
+  "circuits": [
+    {
+      "id": "H2QEC_Surface_Code_5x5",
+      "name": "H²QEC Surface Code 5×5 Lattice",
+      "file": "H2QEC_SURFACE_CODE_5x5.qasm",
+      "problem_type": "Quantum Error Correction",
+      "code_type": "Surface Code",
+      "qubits": {
+        "total": 49,
+        "data_qubits": 25,
+        "stabilizer_qubits": 24,
+        "ancilla_qubits": 0
+      },
+      "code_distance": 5,
+      "depth": "~50-100 gates per stabilizer round",
+      "error_detection": "X and Z stabilizers",
+      "purpose": "Full surface code implementation for production H²QEC validation",
+      "hardware_target": ["ibm_fez", "ibm_torino"],
+      "recommended_shots": 8192,
+      "recommended_rounds": "20-50",
+      "expected_runtime": "30-60 minutes",
+      "h2qec_features": {
+        "hysteresis_detection": true,
+        "dwell_time_threshold": "τ = 60-300 seconds (configurable)",
+        "asymmetric_threshold": "φ = 2.67 (QEC domain-specific)",
+        "syndrome_filtering": true,
+        "false_positive_reduction_target": "79.7%"
+      },
+      "validation_metrics": [
+        "False positive rate reduction",
+        "Syndrome stability over time",
+        "Hysteresis gate effectiveness",
+        "Logical fidelity improvement"
+      ]
+    },
+    {
+      "id": "H2QEC_Repetition_Code_3q",
+      "name": "H²QEC Repetition Code 3-qubit",
+      "file": "H2QEC_REPETITION_CODE_3q.qasm",
+      "problem_type": "Quantum Error Correction",
+      "code_type": "Repetition Code",
+      "qubits": {
+        "total": 4,
+        "data_qubits": 3,
+        "stabilizer_qubits": 0,
+        "ancilla_qubits": 1
+      },
+      "code_distance": 1,
+      "depth": "~10-15 gates",
+      "error_detection": "X errors only",
+      "purpose": "Rapid H²QEC validation and initial testing",
+      "hardware_target": ["ibm_fez", "ibm_torino", "ibm_brisbane"],
+      "recommended_shots": 1024,
+      "recommended_rounds": "10-20",
+      "expected_runtime": "1-2 minutes",
+      "h2qec_features": {
+        "hysteresis_detection": true,
+        "dwell_time_threshold": "τ = 60-300 seconds (configurable)",
+        "asymmetric_threshold": "φ = 2.67",
+        "syndrome_filtering": true,
+        "minimal_overhead": true,
+        "false_positive_reduction_target": "79.7%"
+      },
+      "validation_metrics": [
+        "Quick validation of H²QEC hysteresis gate",
+        "False positive rate baseline",
+        "Circuit execution time"
+      ]
+    },
+    {
+      "id": "H2QEC_Repetition_Code_5q",
+      "name": "H²QEC Repetition Code 5-qubit",
+      "file": "H2QEC_REPETITION_CODE_5q.qasm",
+      "problem_type": "Quantum Error Correction",
+      "code_type": "Repetition Code",
+      "qubits": {
+        "total": 6,
+        "data_qubits": 5,
+        "stabilizer_qubits": 0,
+        "ancilla_qubits": 1
+      },
+      "code_distance": 2,
+      "depth": "~20-30 gates",
+      "error_detection": "X errors with error correction capability",
+      "purpose": "Enhanced H²QEC validation with error correction",
+      "hardware_target": ["ibm_fez", "ibm_torino"],
+      "recommended_shots": 2048,
+      "recommended_rounds": "15-30",
+      "expected_runtime": "5-10 minutes",
+      "h2qec_features": {
+        "hysteresis_detection": true,
+        "dwell_time_threshold": "τ = 60-300 seconds (configurable)",
+        "asymmetric_threshold": "φ = 2.67",
+        "syndrome_filtering": true,
+        "error_correction": true,
+        "false_positive_reduction_target": "79.7%"
+      },
+      "validation_metrics": [
+        "Error correction capability",
+        "H²QEC false positive reduction",
+        "Syndrome pattern analysis"
+      ]
+    },
+    {
+      "id": "OLE_49Q_L3",
+      "name": "Operator Loschmidt Echo 49Q L=3",
+      "file": "49Q_OLE_circuit_L_3_b_0.25_delta0.15.qasm",
+      "problem_type": "Quantum Advantage Benchmark",
+      "code_type": "Operator Loschmidt Echo",
+      "qubits": {
+        "total": 49
+      },
+      "depth": "~1872 gates",
+      "purpose": "IBM Quantum Advantage benchmark with H²QEC post-processing",
+      "hardware_target": ["ibm_fez"],
+      "recommended_shots": 8192,
+      "expected_runtime": "1-2 hours",
+      "h2qec_applicability": {
+        "can_apply_h2qec": true,
+        "hysteresis_analysis": "Post-processing of measurement results",
+        "error_detection": "Thermodynamic signature analysis",
+        "application_method": "Post-processing of measurement distributions"
+      }
+    },
+    {
+      "id": "OLE_49Q_L6",
+      "name": "Operator Loschmidt Echo 49Q L=6",
+      "file": "49Q_OLE_circuit_L_6_b_0.25_delta0.15.qasm",
+      "problem_type": "Quantum Advantage Benchmark",
+      "code_type": "Operator Loschmidt Echo",
+      "qubits": {
+        "total": 49
+      },
+      "depth": "~3744 gates",
+      "purpose": "IBM Quantum Advantage benchmark (deeper) with H²QEC post-processing",
+      "hardware_target": ["ibm_fez"],
+      "recommended_shots": 8192,
+      "expected_runtime": "1-2 hours",
+      "h2qec_applicability": {
+        "can_apply_h2qec": true,
+        "hysteresis_analysis": "Post-processing of measurement results",
+        "error_detection": "Thermodynamic signature analysis",
+        "application_method": "Post-processing of measurement distributions"
+      }
+    },
+    {
+      "id": "OLE_70Q_L6",
+      "name": "Operator Loschmidt Echo 70Q L=6",
+      "file": "70Q_OLE_circuit_L_6_b_0.25_delta0.15.qasm",
+      "problem_type": "Quantum Advantage Benchmark",
+      "code_type": "Operator Loschmidt Echo",
+      "qubits": {
+        "total": 70
+      },
+      "depth": "~3744 gates",
+      "purpose": "IBM Quantum Advantage benchmark (larger) with H²QEC post-processing",
+      "hardware_target": ["ibm_fez"],
+      "recommended_shots": 8192,
+      "expected_runtime": "1-2 hours",
+      "h2qec_applicability": {
+        "can_apply_h2qec": true,
+        "hysteresis_analysis": "Post-processing of measurement results",
+        "error_detection": "Thermodynamic signature analysis",
+        "application_method": "Post-processing of measurement distributions"
+      }
+    }
+  ],
+  "h2qec_parameters": {
+    "domain": "Quantum Error Correction (QEC)",
+    "phi_value": 2.67,
+    "phi_basis": "Derived from measurement disturbance in quantum error correction",
+    "phi_source": "H²QEC patent specification (US App. 63/927,371)",
+    "dwell_time_range": "60-300 seconds (or equivalent measurement cycles)",
+    "dwell_time_purpose": "Minimum duration for error persistence before triggering correction",
+    "asymmetric_thresholds": {
+      "theta_up": "θ_base × φ = θ_base × 2.67",
+      "theta_down": "θ_base / φ = θ_base / 2.67",
+      "purpose": "Creates hysteresis loop that resists premature state transitions"
+    },
+    "hysteresis_gate": {
+      "type": "Dual-threshold Boolean state machine",
+      "states": ["NO_ERROR", "ERROR_DETECTED"],
+      "transition_logic": "Asymmetric thresholds with dwell-time enforcement"
+    }
+  },
+  "validation_targets": {
+    "false_positive_reduction": "79.7% (validated on ibm_fez, ibm_torino)",
+    "logical_fidelity_improvement": "895.72% average (cross-code validation)",
+    "hardware_validated": ["ibm_fez (156-qubit)", "ibm_torino (133-qubit Heron r2)"],
+    "statistical_significance": {
+      "cohens_d": 10.59,
+      "p_value": "< 0.0001",
+      "reproducibility": "15/15 successful runs (100%)"
+    },
+    "performance_metrics": {
+      "signal_enhancement": "2.97× true signal amplification",
+      "free_energy_reduction": "35% thermal noise suppression",
+      "entropy_reduction": "43.7% distribution sharpening",
+      "noise_rejection_rate": "93.5% of transient errors filtered"
+    }
+  },
+  "circuit_recommendations": {
+    "quick_validation": {
+      "circuit_id": "H2QEC_Repetition_Code_3q",
+      "qubits": 3,
+      "shots": 1024,
+      "rounds": "10-20",
+      "expected_time": "1-2 minutes",
+      "reason": "Minimal overhead, fast execution, good for initial H²QEC validation"
+    },
+    "standard_validation": {
+      "circuit_id": "H2QEC_Repetition_Code_5q",
+      "qubits": 5,
+      "shots": 2048,
+      "rounds": "15-30",
+      "expected_time": "5-10 minutes",
+      "reason": "Better error correction, still manageable size, good for comprehensive testing"
+    },
+    "production_validation": {
+      "circuit_id": "H2QEC_Surface_Code_5x5",
+      "qubits": 49,
+      "shots": 8192,
+      "rounds": "20-50",
+      "expected_time": "30-60 minutes",
+      "reason": "Full surface code implementation, validates H²QEC on realistic QEC code, matches IBM hardware capacity"
+    },
+    "benchmark_integration": {
+      "circuit_ids": ["OLE_49Q_L3", "OLE_49Q_L6", "OLE_70Q_L6"],
+      "reason": "Apply H²QEC post-processing to existing IBM Quantum Advantage benchmarks",
+      "application_method": "Post-processing of measurement distributions with H²QEC hysteresis filtering"
+    }
+  },
+  "mathematical_framework": {
+    "hysteresis_gate": {
+      "description": "Dual-threshold system with asymmetric thresholds",
+      "formula": {
+        "theta_up": "θ_up = θ_base × φ",
+        "theta_down": "θ_down = θ_base / φ",
+        "phi": "φ = 2.67 (QEC domain-specific)"
+      }
+    },
+    "dwell_time_enforcement": {
+      "description": "Minimum persistence requirement for error detection",
+      "formula": "correction_triggered = (state == ERROR_DETECTED) AND (dwell_time >= τ)",
+      "tau_range": "τ = 60-300 seconds (or equivalent measurement cycles)"
+    },
+    "false_positive_reduction": {
+      "description": "Quantified improvement over baseline",
+      "formula": "FPR_H2QEC = FPR_baseline × (1 - 0.797)",
+      "validated_reduction": "79.7%"
+    }
+  },
+  "references": {
+    "patent_applications": [
+      {
+        "title": "Methods and Systems for Hysteresis-Stabilized Quantum Error Correction via Substrate Remapping",
+        "application_number": "63/927,371",
+        "filing_date": "2025-11-29",
+        "status": "Provisional - Filed"
+      }
+    ],
+    "related_patents": [
+      {
+        "title": "Universal Dwell-Time Intelligence Using Attention-Hysteresis Fusion",
+        "relationship": "Claims priority from H²QEC (63/927,371)"
+      },
+      {
+        "title": "Quantum-Classical Entropy Divergence Detection",
+        "relationship": "Claims priority from H²QEC (63/927,371)"
+      }
+    ],
+    "documentation": {
+      "hardware_validation": "HARDWARE_VALIDATION.md",
+      "statistical_analysis": "STATISTICAL_VALIDATION_REPORT.md",
+      "benchmark_reports": "FINAL_BENCHMARK_REPORT.md"
+    }
+  },
+  "metadata": {
+    "version": "1.0",
+    "created": "2025-12-07",
+    "last_updated": "2025-12-07",
+    "purpose": "H²QEC circuit catalog for Quantum Advantage Tracker submission",
+    "maintainer": "H²Q Project, Ken Mendoza",
+    "license": "Research and validation purposes. Patent-pending technology (US App. 63/927,371).",
+    "submission_status": "Ready for Quantum Advantage Tracker submission"
+  }
+}

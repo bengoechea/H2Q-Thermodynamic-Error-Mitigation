@@ -32,6 +32,29 @@ Implementation and artifacts for **operator_loschmidt_echo_70x1872** are located
 
 **Primary Job ID:** `d4lutmiv0j9c73e5nvt0`
 
+**All 10 Hardware Run Job IDs:**
+1. `d4ps8frher1c73bakq70` (1024 shots)
+2. `d4ps8hnt3pms7396j020` (1024 shots)
+3. `d4ps8j7t3pms7396j040` (1024 shots)
+4. `d4ps8kk5fjns73cvoomg` (1024 shots)
+5. `d4ps8m3her1c73bakqdg` (1024 shots)
+6. `d4pthtsfitbs739gdd00` (1024 shots)
+7. `d4puf9ft3pms7396l61g` (8192 shots)
+8. `d4puo87t3pms7396lef0` (4096 shots)
+9. `d4puo9nt3pms7396leh0` (4096 shots)
+10. `d4puobkfitbs739geheg` (4096 shots)
+
+**Total Compute Time:** All 10 runs completed within IBM Quantum's free access window (< 10 minutes total quantum compute time).
+
+Loschmidt echo result for operator_loschmidt_echo_70x1872
+
+Using H²Q thermodynamic error mitigation on IBM Quantum hardware, we estimate the Loschmidt-echo observable for operator_loschmidt_echo_70x1872 as ⟨O⟩ = 0.0004 ± 0.016 where 0.0004 is the H²Q‑mitigated expectation value and 0.016 combines statistical uncertainty from 10 independent runs (6 runs at 1024 shots, 3 runs at 4096 shots, 1 run at 8192 shots) with a conservative bound on systematic bias from the hysteresis filter and entropy‑based confidence criterion. The raw counts, per‑run estimates, and aggregation logic are provided in HARDWARE_VALIDATION.md and the results/ directory to enable independent recomputation and alternative error analyses.
+
+**Interpretation Note:** The reported value ⟨O⟩ = 0.0004 ± 0.016 is consistent with zero within uncertainty. Analysis reveals uniform (maximally mixed) bitstring distributions across all shot counts, which may indicate a high-noise regime, insufficient shots to resolve signal structure, or that Loschmidt echo circuits naturally measure coherence rather than state populations. This submission demonstrates H²Q methodology validation on hardware with rigorous statistics, but the uniform distribution suggests this validates H²Q's conservative filtering approach (preserving states when signal is unclear) more than it demonstrates quantum advantage for this circuit instance.
+
+**Relation to standard mitigation baselines**
+
+In addition to the H²Q thermodynamic error‑mitigated estimate reported here, this dataset is suitable for future comparisons against standard mitigation techniques such as simple global rescaling, zero‑noise extrapolation (ZNE), and Clifford data regression (CDR); these baselines are not yet included in this initial submission but can be reproduced from the public circuits and raw counts in this repository.
 
 ## Current Status & Roadmap
 

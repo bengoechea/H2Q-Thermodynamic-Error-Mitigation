@@ -49,6 +49,10 @@ H²Q Thermodynamic Error Mitigation has been validated on IBM Quantum hardware w
 
 The 895.72% average cross-code improvement reflects H²Q's ability to enhance syndrome decoding across different stabilizer code families without code-specific tuning.
 
+### Statistical Model for Combining Runs
+
+For operator_loschmidt_echo_70x1872, H²Q aggregates the 10 independent hardware runs using a shot‑weighted mean of the per‑run expectation values, so that runs with more shots contribute proportionally more to the final estimator. The reported uncertainty δX is the 95% confidence‑interval half‑width obtained by combining the empirical standard error of the shot‑weighted mean with an additive bound on systematic bias derived from the hysteresis filter and entropy‑based acceptance criterion.
+
 ---
 
 ## Key Metrics Explained

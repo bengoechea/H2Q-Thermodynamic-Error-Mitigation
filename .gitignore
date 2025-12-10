@@ -90,6 +90,56 @@ VISUALIZATION_ANALYSIS_SUMMARY.md
 ESTIMATED_PERFORMANCE_POLICY.md
 Based on the H²Q Claims Evaluation Repor.py
 
+# Internal dialogue and work files (not for public repo)
+# Evaluation and assessment files
+*_EVALUATION.md
+*_ASSESSMENT.md
+*FEYNMAN*.md
+FEYNMAN_EVALUATION.md
+SUBMISSION_READINESS_ASSESSMENT.md
+
+# Internal analysis and planning documents
+*_ANALYSIS.md
+*_RECOMMENDATION.md
+*_OPTIONS.md
+*_PLAN.md
+*_GUIDANCE.md
+*_COMPARISON.md
+*_ELIGIBILITY_ANALYSIS.md
+*_FEASIBILITY_ANALYSIS.md
+*_VALUE_ANALYSIS.md
+*_TIME_USAGE_RECOMMENDATION.md
+NEXT_STEPS_RECOMMENDATION.md
+FINAL_TIME_USAGE_RECOMMENDATION.md
+REMAINING_TIME_OPTIONS.md
+TWO_MINUTE_COMPUTE_OPTIONS.md
+RUNTIME_FEASIBILITY_ANALYSIS.md
+PUBLICATION_VALUE_ANALYSIS.md
+ECONOMIC_HEALTHCARE_COMPARISON.md
+GENIUS_VISA_ELIGIBILITY_ANALYSIS.md
+PUBLIC_ANNOUNCEMENT_GUIDANCE.md
+NEXT_LEVEL_VALIDATION_PLAN.md
+LICENSE_IMPLEMENTATION_SUMMARY.md
+
+# Internal walkthrough and demonstration files
+*Demonstration*.md
+*Walk*.md
+"IBM Quantum Advantage Demonstration Walk.md"
+
+# Internal analysis scripts
+analyze_*.py
+check_*.py
+combine_*.py
+
+# Removed placeholder/stub files (do not re-add)
+src/h2q_thermo.py
+src/run_experiment.py
+
+# Internal documentation files
+IBM_QUANTUM_RUNS_DOCUMENTATION.md
+BENCHMARK_READINESS_CHECKLIST.md
+REPO_REVIEW_ALREADY_PUBLIC.md
+
 # Local/backup files
 *.local
 README.md.local

@@ -1,0 +1,30 @@
+{
+  "h2qec": {
+    "instances": [
+      {
+        "id": "h2qec_surface_code_5x5",
+        "path": "H2QEC_SURFACE_CODE_5x5.qasm",
+        "qubits": 49,
+        "gates": 163
+      },
+      {
+        "id": "h2qec_repetition_3q",
+        "path": "H2QEC_REPETITION_CODE_3q.qasm",
+        "qubits": 4,
+        "gates": 13
+      },
+      {
+        "id": "h2qec_repetition_5q",
+        "path": "H2QEC_REPETITION_CODE_5q.qasm",
+        "qubits": 6,
+        "gates": 23
+      }
+    ],
+    "author": "Kenneth A Mendoza",
+    "institution": "Independent Research",
+    "patent_reference": "US Provisional Application 63/927,371 (Filed Nov 29, 2025)",
+    "implementation": "https://github.com/bengoechea/H2Q-Thermodynamic-Error-Mitigation",
+    "patent_documentation": "https://kenmendoza.com/patents"
+  }
+}
+
