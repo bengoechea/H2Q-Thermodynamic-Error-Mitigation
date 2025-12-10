@@ -174,7 +174,7 @@ If using this work, please cite:
   author = {Mendoza, Kenneth},
   title = {H²Q Thermodynamic Error Mitigation: Quantum Advantage Tracker},
   year = {2025},
-  note = {US Provisional Patent Application 63/927,371},
+  note = {US Provisional Patent Applications 63/927,371 (Nov 29, 2025), 63/933,465 (Dec 8, 2025)},
   url = {https://github.com/bengoechea/H2Q-Thermodynamic-Error-Mitigation}
 }
 ```
@@ -183,7 +183,7 @@ If using this work, please cite:
 
 Apache License 2.0 with patent grant. See LICENSE and PATENT.txt.
 
-**Patent Notice:** This software implements methods covered by U.S. Patent Application 63/927,371. Patent rights are granted under Apache 2.0, subject to license termination provisions.
+**Patent Notice:** This software implements methods covered by U.S. Patent Applications 63/927,371 (filed November 29, 2025) and 63/933,465 (filed December 8, 2025). Patent rights are granted under Apache License 2.0, subject to license termination provisions.
 
 For commercial licensing: ken@kenmendoza.com
 

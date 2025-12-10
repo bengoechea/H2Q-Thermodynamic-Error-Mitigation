@@ -19,7 +19,8 @@ Independent Research
 ### Method Proof
 
 **Patent Reference:**
-- US Provisional Application 63/927,371 (Nov 29, 2025)
+- US Provisional Application 63/927,371 (filed November 29, 2025)
+- US Provisional Application 63/933,465 (filed December 8, 2025)
 - Patent details: https://kenmendoza.com/patents
 
 **Implementation Repository:**

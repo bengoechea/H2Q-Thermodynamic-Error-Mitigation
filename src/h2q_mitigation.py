@@ -2,8 +2,9 @@
 H²Q Thermodynamic Error Mitigation
 ==================================
 
-Patent: US 63/927,371 (Filed November 29, 2025)
+Patents: US 63/927,371 (filed November 29, 2025), US 63/933,465 (filed December 8, 2025)
 Inventor: Kenneth Mendoza (ken@kenmendoza.com)
+License: Apache License 2.0
 
 This module provides the public API for H²Q error mitigation.
 Hardware validation: 79.7% false positive reduction, 97.63% logical fidelity
@@ -30,7 +31,8 @@ from typing import Dict, Tuple
 
 __version__ = "1.0.0"
 __author__ = "Kenneth Mendoza"
-__patent__ = "US 63/927,371"
+__patent__ = "US 63/927,371, US 63/933,465"
+__license__ = "Apache License 2.0"
 
 
 class H2QMitigator:
