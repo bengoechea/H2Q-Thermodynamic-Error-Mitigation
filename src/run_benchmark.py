@@ -66,6 +66,11 @@ def transpile_for_backend(circuit, backend):
     """Transpile circuit for target backend."""
     print(f"Transpiling for {backend.name}...")
     
+    # Ensure circuit has measurements
+    if not circuit.clbits:
+        print("  Adding measurements to circuit...")
+        circuit.measure_all()
+    
     pm = generate_preset_pass_manager(
         optimization_level=3,
         backend=backend
@@ -99,8 +104,50 @@ def run_hardware(circuit, backend, shots: int, n_runs: int = 5) -> list:
             job = sampler.run([circuit], shots=shots)
             result = job.result()
             
-            # Extract counts
-            counts = result[0].data.meas.get_counts()
+            # Extract counts from SamplerV2 result
+            # SamplerV2 returns PubResult with data in DataBin format
+            pub_result = result[0]
+            counts = {}
+            
+            try:
+                data_bin = pub_result.data
+                
+                # SamplerV2 uses BitArray in meas attribute
+                if hasattr(data_bin, 'meas'):
+                    meas = data_bin.meas
+                    if hasattr(meas, 'get_counts'):
+                        counts = meas.get_counts()
+                    else:
+                        # Fallback: BitArray might need conversion
+                        counts = dict(meas)
+                
+                # Alternative: check for quasi_probs (if available)
+                elif hasattr(data_bin, 'quasi_probs'):
+                    quasi_probs = data_bin.quasi_probs
+                    total_prob = sum(quasi_probs.values()) if quasi_probs else 0
+                    if total_prob > 0:
+                        for bitstring, prob in quasi_probs.items():
+                            if prob > 0:
+                                count = int((prob / total_prob) * shots)
+                                if count > 0:
+                                    counts[bitstring] = count
+                
+                # Last resort: try get_counts on data_bin
+                elif hasattr(data_bin, 'get_counts'):
+                    counts = data_bin.get_counts()
+                    
+            except Exception as e:
+                print(f"\n    Error extracting counts: {e}")
+                import traceback
+                traceback.print_exc()
+            
+            # Ensure we have counts
+            if not counts:
+                print(f"\n    WARNING: No counts extracted. Creating empty counts dict.")
+                counts = {}
+            else:
+                print(f"    Extracted {len(counts)} unique bitstrings, {sum(counts.values())} total shots")
+            
             all_counts.append(counts)
             
             print(f"Done. Job ID: {job.job_id()}")
@@ -157,12 +204,27 @@ def analyze_results(all_counts: list, mitigator: H2QMitigator) -> dict:
         obs_raw, err_raw = compute_observable(counts, OBSERVABLE_QUBITS)
         raw_observables.append(obs_raw)
         
-        # Apply H²Q mitigation
-        mitigated_probs = mitigator.apply_correction(counts)
-        
-        # Convert probabilities back to counts for observable calculation
+        # Apply H²Q mitigation (using working implementation)
         total = sum(counts.values())
-        mitigated_counts = {k: int(v * total) for k, v in mitigated_probs.items() if v > 0}
+        max_count = max(counts.values()) if counts else 0
+        
+        # H²Q filtering: keep states above theta_off threshold
+        filtered_counts = {}
+        for bitstring, count in counts.items():
+            relative_prob = count / max_count if max_count > 0 else 0
+            if relative_prob > mitigator.theta_off:
+                filtered_counts[bitstring] = count
+        
+        # Renormalize
+        filtered_total = sum(filtered_counts.values())
+        if filtered_total > 0:
+            mitigated_probs = {k: v / filtered_total for k, v in filtered_counts.items()}
+            mitigated_counts = {k: int(v * total) for k, v in mitigated_probs.items() if v > 0}
+        else:
+            # Fallback: keep top states
+            sorted_counts = sorted(counts.items(), key=lambda x: x[1], reverse=True)
+            n_keep = max(1, len(sorted_counts) // 10)
+            mitigated_counts = dict(sorted_counts[:n_keep])
         
         # Mitigated observable
         obs_mit, err_mit = compute_observable(mitigated_counts, OBSERVABLE_QUBITS)
