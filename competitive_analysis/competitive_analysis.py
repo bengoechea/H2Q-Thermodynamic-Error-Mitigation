@@ -127,19 +127,19 @@ class CompetitiveAnalyzer:
         "Google_Willow": SystemMetrics(
             name="Google Willow (Temporal Averaging)",
             qubit_count=100,  # Representative for Willow-class systems
-            gate_fidelity_1q=0.9991,  # From Willow spec sheet, Dec 2024
-            gate_fidelity_2q=0.991,  # From Willow spec sheet, Dec 2024
-            coherence_t1=170.0,  # Typical for Google's superconducting processors
+            gate_fidelity_1q=0.9997,  # Updated: Willow spec sheet, Dec 2024 (99.97% average)
+            gate_fidelity_2q=0.9988,  # Updated: Willow spec sheet, Dec 2024 (99.88% average)
+            coherence_t1=106.0,  # Updated: Median T1 ~106 μs (Willow spec, Dec 2024)
             coherence_t2=115.0,  # Typical T2* for Google processors
             logical_error_rate=0.030,  # Below-threshold surface code error correction (Willow achievement)
-            false_positive_rate=0.025,  # 25% from Markcom/H2QEC_STATE_OF_THE_ART_COMPARISON.md
+            false_positive_rate=0.025,  # Estimated for temporal averaging approach
             error_correction_method="Temporal averaging (sliding window)",
             notes="Google's 2024 advancement. Below-threshold surface-code error correction. "
                   "Published in Nature (2024). Temporal averaging with sliding window approach.",
-            parameter_source="Google Willow spec sheet, Dec 2024. Nature publication: "
-                            "'Suppressing quantum errors by scaling a surface code logical qubit' "
+            parameter_source="Google Willow spec sheet, Dec 2024 (https://www.aicerts.ai/news/google-willow-hardware-technical-detail-deep-dive/). "
+                            "Nature publication: 'Suppressing quantum errors by scaling a surface code logical qubit' "
                             "(Nature, 2024, https://www.nature.com/articles/s41586-023-07107-9). "
-                            "Markcom/H2QEC_STATE_OF_THE_ART_COMPARISON.md for FP rate comparison."
+                            "FP rate estimated for temporal averaging approach."
         ),
         "IonQ_Trapped_Ion": SystemMetrics(
             name="IonQ Trapped Ion",
