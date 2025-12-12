@@ -123,7 +123,7 @@ git commit -m "Add H²QEC (Hysteretic Quantum Error Correction) circuit models
 - Surface Code 5×5 (49 qubits, 136 gates)
 - Repetition Code 3-qubit (4 qubits, 8 gates)
 - Repetition Code 5-qubit (6 qubits, 18 gates)
-- Hysteretic syndrome filtering with φ = 2.67
+- Hysteretic syndrome filtering with a domain-calibrated asymmetry ratio (κ\_QEC)
 - Target: 79.7% false positive reduction
 - Patent Reference: US App. 63/927,371"
 

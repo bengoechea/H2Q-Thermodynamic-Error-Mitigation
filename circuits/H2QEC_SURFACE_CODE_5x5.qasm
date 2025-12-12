@@ -198,7 +198,7 @@ h q[48];
 // ============================================
 // At this point, H²QEC hysteresis gate would analyze
 // stabilizer measurement patterns to detect error syndromes
-// with dwell-time thresholds (τ) and asymmetric thresholds (φ)
+// with dwell-time thresholds (τ) and asymmetric thresholds (κ)
 
 // ============================================
 // MEASUREMENT
@@ -235,5 +235,7 @@ bit[25] data_out;
 for i in [0:25] {
     data_out[i] = measure q[i];
 }
+
+
 
 

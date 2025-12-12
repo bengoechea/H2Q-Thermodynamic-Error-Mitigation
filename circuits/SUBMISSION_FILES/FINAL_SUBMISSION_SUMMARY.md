@@ -26,7 +26,7 @@
 
 **Content:**
 - Title: `h2qec`
-- Description: H²Q thermodynamic error mitigation with φ = 2.67
+- Description: H²Q thermodynamic error mitigation with domain-calibrated hysteresis + dwell-time persistence
 - 79.7% false positive reduction
 - GitHub repo link
 - Patent documentation link
@@ -173,5 +173,7 @@ bash /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum
 ---
 
 **All files updated and ready for Cooley review!** ✅
+
+
 
 

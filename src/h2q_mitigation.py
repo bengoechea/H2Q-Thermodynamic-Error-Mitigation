@@ -63,7 +63,7 @@ class H2QMitigator:
     For full implementation: ken@kenmendoza.com
     """
     
-    def __init__(self, theta_on: float = 0.8, theta_off: float = 0.3, tau: int = 10):
+    def __init__(self, theta_on: float | None = None, theta_off: float | None = None, tau: int | None = None):
         """
         Initialize the H²Q Mitigator.
         
@@ -75,8 +75,9 @@ class H2QMitigator:
             tau: Dwell time parameter for temporal stability analysis.
         
         Note:
-            Default parameters are optimized for typical quantum advantage
-            benchmarks. Custom calibration available under commercial license.
+            Parameter values are calibration-dependent. The public repository
+            intentionally omits tuned defaults; calibration guidance is available
+            in the associated patent filings and/or under commercial license.
         """
         self.theta_on = theta_on
         self.theta_off = theta_off

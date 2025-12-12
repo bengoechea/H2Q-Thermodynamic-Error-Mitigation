@@ -29,7 +29,7 @@ Author: Kenneth A Mendoza
 - Surface Code 5×5 (49 qubits, 163 gates)
 - Repetition Code 3-qubit (4 qubits, 13 gates)
 - Repetition Code 5-qubit (6 qubits, 23 gates)
-- Hysteretic syndrome filtering with φ = 2.67
+- Hysteretic syndrome filtering with a domain-calibrated asymmetry ratio (κ_QEC)
 - Target: 79.7% false positive reduction
 - Patent: US Provisional 63/927,371
 

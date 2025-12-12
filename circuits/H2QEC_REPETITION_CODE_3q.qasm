@@ -56,8 +56,8 @@ syndrome[1] = measure q[0];
 // - syndrome[0] = 0, syndrome[1] = 1 → error on q[2]
 // - syndrome[0] = 0, syndrome[1] = 0 → no error detected
 //
-// H²QEC applies dwell-time threshold (τ) and asymmetric
-// threshold (φ) to filter transient errors
+// H²QEC applies dwell-time threshold (τ) and an asymmetric
+// threshold ratio (κ) to filter transient errors
 
 // ============================================
 // MEASUREMENT
@@ -66,5 +66,7 @@ bit[3] data_out;
 data_out[0] = measure q[0];
 data_out[1] = measure q[1];
 data_out[2] = measure q[2];
+
+
 
 

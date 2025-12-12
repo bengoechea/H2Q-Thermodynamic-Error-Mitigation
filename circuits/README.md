@@ -11,14 +11,14 @@
 
 H²QEC (Hysteretic Quantum Error Correction) addresses the critical challenge of **false positive syndrome detection** in quantum error correction by applying **hysteretic filtering** to quantum error syndromes. Traditional QEC decoders trigger corrections on every non-zero syndrome measurement, leading to unnecessary corrections that degrade logical fidelity.
 
-H²QEC introduces a **dual-threshold hysteresis gate** with domain-specific asymmetric thresholds (φ = 2.67 for QEC) that filters transient measurement errors while preserving persistent error signals. This approach achieves a **79.7% reduction in false positive syndrome detections** on IBM Quantum hardware, validated across multiple error correction codes.
+H²QEC introduces a **dual-threshold hysteresis gate** with domain-calibrated asymmetric thresholds (κ\_QEC for QEC) that filters transient measurement errors while preserving persistent error signals. This approach achieves a **79.7% reduction in false positive syndrome detections** on IBM Quantum hardware, validated across multiple error correction codes.
 
 ### Key Innovation
 
 Unlike conventional QEC decoders that apply corrections immediately upon syndrome detection, H²QEC implements:
 
-1. **Dwell-Time Threshold (τ):** Minimum duration (60-300 seconds) for which an error syndrome must persist before triggering correction
-2. **Asymmetric Thresholds (φ):** Domain-specific threshold ratio (φ ≈ 2.67 for QEC) that creates different sensitivity for upward vs. downward state transitions
+1. **Dwell-Time Threshold (τ):** Minimum duration (measured in rounds/cycles) for which an error syndrome must persist before triggering correction
+2. **Asymmetric Thresholds (κ):** Domain-calibrated threshold ratio (κ\_QEC for QEC) that creates different sensitivity for upward vs. downward state transitions
 3. **Hysteretic State Machine:** Boolean state machine that resists premature state transitions, filtering thermal noise from true errors
 
 ---
@@ -30,13 +30,13 @@ Unlike conventional QEC decoders that apply corrections immediately upon syndrom
 The H²QEC hysteresis gate implements a dual-threshold system:
 
 ```
-θ_up = θ_base × φ
-θ_down = θ_base / φ
+θ_up = θ_base × κ
+θ_down = θ_base / κ
 ```
 
 Where:
 - **θ_base:** Domain-calibrated base threshold
-- **φ ≈ 2.67:** QEC domain-specific threshold ratio (derived from measurement disturbance)
+- **κ\_QEC:** QEC domain-calibrated asymmetry ratio (derived from measurement-disturbance-dominated regimes)
 - **θ_up:** Threshold for transitioning from "no error" to "error detected" state
 - **θ_down:** Threshold for transitioning from "error detected" to "no error" state
 
@@ -155,23 +155,23 @@ Validated on IBM hardware with statistical significance: **Cohen's d = 10.59, p 
 
 ## H²QEC Parameters
 
-### Domain-Specific Threshold (φ)
+### Domain-Calibrated Asymmetry Ratio (κ)
 
 For Quantum Error Correction domain:
-- **φ ≈ 2.67**
-- **Basis:** Derived from measurement disturbance in quantum error correction
-- **Source:** H²QEC patent specification (US App. 63/927,371)
+- **κ\_QEC:** calibrated per backend/noise regime
+- **Basis:** derived from measurement disturbance in quantum error correction
+- **Source:** patent filings (US App. 63/927,371) and validation artifacts in this repository
 
 ### Dwell-Time Threshold (τ)
 
-- **Range:** 60-300 seconds (or equivalent measurement cycles)
+- **Range:** configurable (measured in rounds/cycles)
 - **Purpose:** Minimum duration for error persistence before triggering correction
 - **Effect:** Filters transient measurement errors while preserving persistent errors
 
 ### Asymmetric Thresholds
 
-- **θ_up = θ_base × 2.67:** Threshold for detecting new errors (more sensitive)
-- **θ_down = θ_base / 2.67:** Threshold for clearing error state (less sensitive)
+- **θ_up = θ_base × κ:** Threshold for detecting new errors (more sensitive)
+- **θ_down = θ_base / κ:** Threshold for clearing error state (less sensitive)
 - **Purpose:** Creates hysteresis loop that resists premature state transitions
 
 ---
@@ -223,7 +223,7 @@ decoder = HysteresisDecoder(
     theta_low=0.3,
     theta_high=0.8,
     tau_dwell=2,  # Minimum 2 rounds
-    phi=2.67      # QEC domain-specific
+    kappa=...     # QEC domain-calibrated
 )
 
 # Process syndrome measurements
@@ -250,7 +250,7 @@ job = sampler.run([circuit], shots=8192)
 results = job.result()
 
 # Apply H²QEC hysteresis filtering to results
-filtered_results = apply_h2qec_filtering(results, phi=2.67, tau=2)
+filtered_results = apply_h2qec_filtering(results, kappa=..., tau=2)
 ```
 
 ---
@@ -291,7 +291,7 @@ circuits/
 
 - Koopman-von Neumann mechanics applied to quantum error correction
 - Thermodynamic error mitigation via hysteresis filtering
-- Domain-specific threshold selection (φ = 2.67 for QEC domain)
+- Domain-specific threshold selection (κ\_QEC for QEC domain)
 
 ---
 
@@ -332,5 +332,7 @@ Hardware validated on IBM Quantum systems (ibm_fez, ibm_torino).
 **Last Updated:** December 2025  
 **Version:** 1.0  
 **Status:** Ready for Quantum Advantage Tracker submission
+
+
 
 

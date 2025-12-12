@@ -13,6 +13,13 @@ Unlike traditional variational algorithms (VQE/QAOA) that suffer from "Barren Pl
 *   **Statistical Significance:** $p < 0.0001$ (Cohen's d = 10.59)
 *   **Speedup:** O(1) single-shot measurement vs. O(N) iterative optimization
 
+## Public Disclosure Note (IP & Reproducibility)
+This repository is intentionally published as a **verification and reproduction package**. It includes job artifacts, raw outputs, and a public reference interface sufficient to validate the reported results.
+
+To avoid disclosing implementation details that enable straightforward reimplementation, **tuned constants, calibration heuristics, and proprietary mapping logic are not published here**. The method is covered by filed provisional patent applications referenced elsewhere in this repository. Researchers and reviewers can still independently verify outcomes using the included results, job provenance, and analysis scripts.
+
+**Job registry & audit trail:** see `IBM_QUANTUM_RUNS_DOCUMENTATION.md` and `HARDWARE_VALIDATION.md`.
+
 ## Repository Structure
 *   `/results`: Raw JSON output from 17 independent validation runs on IBM Hardware.
 *   `/src`: Reference Python implementation of the H²Q-Bridge entropy engine.

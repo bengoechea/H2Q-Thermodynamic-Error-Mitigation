@@ -50,12 +50,12 @@ Independent Research
 - https://github.com/bengoechea/H2Q-Thermodynamic-Error-Mitigation
 
 **Method Explanation:**
-H²Q thermodynamic error mitigation treating syndromes as thermal fluctuations with hysteresis-based filtering (φ = 2.67). H²Q applies dual-threshold hysteresis gates with dwell-time enforcement to achieve 79.7% false positive reduction in quantum error correction.
+H²Q thermodynamic error mitigation treating syndromes as thermal fluctuations with domain-calibrated hysteresis-based filtering. H²Q applies dual-threshold hysteresis gates with dwell-time enforcement to achieve 79.7% false positive reduction in quantum error correction.
 
 **Key Features:**
-- Domain-specific threshold ratio: φ = 2.67 (derived from measurement disturbance)
-- Dwell-time enforcement: τ = 60-300 seconds
-- Asymmetric thresholds: θ_up = θ_base × 2.67, θ_down = θ_base / 2.67
+- Domain-calibrated asymmetry ratio (κ\_QEC) for measurement-disturbance-dominated regimes
+- Dwell-time enforcement: τ (configurable; measured in rounds/cycles)
+- Asymmetric thresholds: θ\_up = κ·θ\_base, θ\_down = θ\_base/κ
 
 **Validation Results:**
 - False Positive Reduction: 79.7% (validated on `ibm_fez`, `ibm_torino`)

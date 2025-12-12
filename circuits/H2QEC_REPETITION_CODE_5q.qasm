@@ -59,7 +59,7 @@ syndrome[3] = measure q[0];
 // H²QEC analyzes syndrome pattern with dwell-time thresholds:
 // - Multiple consecutive non-zero syndromes → persistent error
 // - Single non-zero syndrome → transient error (filtered by H²QEC)
-// - Threshold φ determines sensitivity to error patterns
+// - Threshold ratio κ determines sensitivity to error patterns
 
 // ============================================
 // MEASUREMENT
@@ -68,5 +68,7 @@ bit[5] data_out;
 for i in [0:5] {
     data_out[i] = measure q[i];
 }
+
+
 
 

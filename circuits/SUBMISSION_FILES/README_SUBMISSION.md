@@ -30,7 +30,7 @@ All files are in: `QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/`
 ✅ Created in Tracker format following `peaked_circuit` example:
 - Title: `h2qec`
 - Problem description with 79.7% false positive reduction
-- Dwell-time thresholds (φ = 2.67) explanation
+- Dwell-time thresholds (domain-calibrated asymmetry ratio κ\_QEC) explanation
 - Construction details with patent reference
 - Institutions: "Independent Research, Ken Mendoza"
 
@@ -114,7 +114,7 @@ git commit -m "Add H²QEC (Hysteretic Quantum Error Correction) circuit models..
 
 ✅ Complete PR description template with:
 - Circuit summaries (qubits, gates, code types)
-- Method explanation (φ = 2.67, 79.7% reduction)
+- Method explanation (domain-calibrated κ\_QEC, 79.7% reduction)
 - Validation status
 - Patent reference
 - Author information
@@ -202,5 +202,7 @@ quantum-advantage-tracker/data/classically-verifiable-problems/circuit-models/h2
 All files are prepared and ready. Execute the git commands script or follow the manual steps in `COMPLETE_SUBMISSION_GUIDE.md` to complete the submission.
 
 **Recommendation:** Submit now (Option A) to enable community validation! 🚀
+
+
 
 

@@ -20,8 +20,8 @@ This is a control-layer infrastructure contribution toward quantum advantage,
 not a completed advantage demonstration. Metrics are aligned with IBM QOBLIB
 evaluation methodology but do not constitute official QOBLIB problem instances.
 
-Competitive Analysis: H2QEC + Alpha Integration vs. State-of-the-Art
-Analyzes value-add of 5-tuple hysteresis error correction with alpha integration
+Competitive Analysis: H2QEC + Control-Layer Augmentation vs. State-of-the-Art
+Analyzes value-add of 5-tuple hysteresis error correction with a patent-pending control-layer augmentation
 compared to competitors (IBM, Google, etc.) on fidelity and coherence metrics.
 
 Task Class: Surface-code style QEC for sampling, variational algorithms (VQE),
@@ -72,23 +72,23 @@ class ValueAddMetrics:
 
 
 class CompetitiveAnalyzer:
-    """Analyzes H2QEC + Alpha integration against competitors"""
+    """Analyzes H2QEC + control-layer augmentation against competitors"""
     
-    # H2QEC + Alpha Integration Baseline (from hardware validation)
-    H2QEC_ALPHA_BASELINE = SystemMetrics(
-        name="H2QEC + Alpha Integration",
+    # H2QEC + Control-Layer Augmentation Baseline (from hardware validation)
+    H2QEC_CONTROL_BASELINE = SystemMetrics(
+        name="H2QEC + Control-Layer Augmentation",
         qubit_count=156,  # Scaled to comparable IBM 156-qubit system
-        gate_fidelity_1q=0.9995,  # From Alpha-Murmuration experiment (ibm_torino, job d4qqtok5fjns73d0ne00)
+        gate_fidelity_1q=0.9995,  # From internal hardware timing experiment (details withheld in public repo)
         gate_fidelity_2q=0.995,  # Estimated from 1Q improvement + coherence gains
-        coherence_t1=200.0,  # microseconds (improved from baseline via Alpha timing)
-        coherence_t2=150.0,  # microseconds (from Alpha-Murmuration: 73.9% survival vs 52.6% baseline)
+        coherence_t1=200.0,  # microseconds (improved from baseline via control-layer timing augmentation)
+        coherence_t2=150.0,  # microseconds (timing experiment; details withheld in public repo)
         logical_error_rate=0.0237,  # 2.37% from H2QEC validation (ibm_fez, job d4lutmiv0j9c73e5nvt0)
         false_positive_rate=0.0045,  # 0.45% from H2QEC validation (79.7% reduction from 2.23% baseline)
-        error_correction_method="5-tuple Hysteresis + Alpha-Murmuration",
+        error_correction_method="5-tuple Hysteresis + control-layer augmentation",
         notes="Hardware validated on ibm_fez (127-qubit Eagle r3), ibm_torino (Heron/Eagle). "
               "Model-agnostic control logic applicable to superconducting and trapped-ion systems.",
         parameter_source="Validation/H2QEC_Hardware_Validation_Summary.md, "
-                        "H2-Supremacy/COMPUTE_STORIES.md (job d4qqtok5fjns73d0ne00)"
+                        "Internal hardware timing experiment (job IDs available upon request)"
     )
     
     # Competitive benchmarks with inline citations
@@ -160,7 +160,7 @@ class CompetitiveAnalyzer:
     
     def __init__(self, custom_h2qec: Optional[SystemMetrics] = None):
         """Initialize with optional custom H2QEC metrics"""
-        self.h2qec = custom_h2qec or self.H2QEC_ALPHA_BASELINE
+        self.h2qec = custom_h2qec or self.H2QEC_CONTROL_BASELINE
         self.competitors = self.COMPETITORS.copy()
     
     def calculate_value_add(self, competitor: SystemMetrics) -> ValueAddMetrics:
@@ -406,12 +406,12 @@ class CompetitiveAnalyzer:
         report.append("   → Critical for practical quantum advantage in sampling and VQE workloads")
         report.append("")
         report.append(f"4. Fidelity Advantage: {best_fidelity[1].fidelity_improvement_1q:.2f}% X gate improvement vs {self.competitors[best_fidelity[0]].name}")
-        report.append("   → Alpha-Murmuration timing improves gate performance")
-        report.append("   → Resonates with vacuum coupling constant (α ≈ 1/137)")
+        report.append("   → Control-layer timing augmentation improves gate performance (details withheld in public repo)")
+        report.append("   → Physics-informed scheduling family (details withheld in public repo)")
         report.append("")
         report.append("5. Combined Value (Hardware-Agnostic):")
         report.append("   → H2QEC (hysteresis) + Alpha (timing) = Dual-layer error suppression")
-        report.append("   → Physical constant (α) + Control logic (5-tuple) = Universal stability")
+        report.append("   → Physics-informed control + Control logic (5-tuple) = stability stack")
         report.append("   → Applicable to superconducting, trapped-ion, and other platforms")
         report.append("")
         report.append("6. QOBLIB Alignment:")

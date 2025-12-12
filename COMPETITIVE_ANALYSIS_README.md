@@ -1,6 +1,6 @@
-# Competitive Analysis: H2QEC + Alpha Integration
+# Competitive Analysis: H2QEC + Control-Layer Augmentation
 
-Quick tools to analyze the value-add of your 5-tuple hysteresis error correction with Alpha integration compared to competitors (IBM 156-qubit, Google, etc.).
+Quick tools to analyze the value-add of your 5-tuple hysteresis error correction with a patent-pending control-layer augmentation compared to competitors (IBM 156-qubit, Google, etc.).
 
 **Task Class:** Surface-code style QEC for sampling, variational algorithms (VQE), and expectation-value estimation workloads.
 
@@ -40,15 +40,15 @@ Outputs:
 
 ### 1. **X Gate Fidelity (1Q)**
 - Measures single-qubit gate performance
-- H2QEC + Alpha: 0.9995 (vs IBM 0.9990)
-- **Improvement: +0.05%** (Alpha-Murmuration timing)
-- **Source:** Alpha-Murmuration experiment (ibm_torino, job d4qqtok5fjns73d0ne00)
+- H2QEC + control augmentation: 0.9995 (vs IBM 0.9990)
+- **Improvement: +0.05%** (control-layer timing augmentation; details withheld in public repo)
+- **Source:** internal hardware timing experiment (job IDs available upon request)
 
 ### 2. **T2 Coherence**
 - Quantum memory lifetime
-- H2QEC + Alpha: 150 μs (vs IBM 100 μs)
+- H2QEC + control augmentation: 150 μs (vs IBM 100 μs)
 - **Improvement: +50%** (combined effect)
-- **Source:** Alpha-Murmuration: 73.9% survival vs 52.6% baseline
+- **Source:** internal hardware timing experiment (details withheld in public repo)
 
 ### 3. **False Positive Reduction**
 - Syndrome detection accuracy
@@ -79,8 +79,8 @@ Outputs:
 
 ### Key Differentiators:
 1. **5-Tuple Hysteresis**: Prevents measurement-induced oscillations
-2. **Alpha-Murmuration**: Resonates with vacuum coupling constant (α ≈ 1/137)
-3. **Dual-Layer Suppression**: Physical constant + control logic = universal stability
+2. **Control-Layer Augmentation**: Physics-informed timing family (details withheld in public repo)
+3. **Dual-Layer Suppression**: Physical control + hysteresis logic = stability stack
 4. **Hardware-Agnostic**: Applicable to superconducting, trapped-ion, and other platforms
 5. **QOBLIB-Aligned**: Metrics align with IBM's benchmarking framework for practical advantage
 
@@ -96,7 +96,7 @@ All competitor metrics include inline citations with public links for independen
 H2QEC metrics sourced from hardware validation:
 - `Validation/H2QEC_Hardware_Validation_Summary.md`
 - `H2-Supremacy/COMPUTE_STORIES.md`
-- Job IDs: `d4lutmiv0j9c73e5nvt0` (ibm_fez), `d4qqtok5fjns73d0ne00` (ibm_torino)
+- Job IDs: available upon request
 
 ## Custom Analysis
 
@@ -178,7 +178,7 @@ This framework can be extended to use direct QOBLIB problem instances when evalu
 
 ## Hardware-Agnostic Design
 
-H2QEC + Alpha is **model- and hardware-agnostic** control logic that can sit on top of:
+H2QEC + control-layer augmentation is **model- and hardware-agnostic** control logic that can sit on top of:
 
 - **Superconducting systems**: IBM (Eagle/Heron), Google (Willow)
 - **Trapped-ion systems**: IonQ, Quantinuum
@@ -199,7 +199,7 @@ The analysis translates improvements into IBM's preferred language:
 
 - Baseline metrics from hardware validation on `ibm_fez` and `ibm_torino`
 - H2QEC false positive reduction: 79.7% (validated)
-- Alpha-Murmuration survival: 73.9% vs 52.6% (Golden Ratio)
+- Additional timing/control-layer experiment results: available upon request
 - All metrics based on real hardware results
 - All parameter sources cited inline in code comments
 - Analysis framework ready for integration with QOBLIB benchmark problems

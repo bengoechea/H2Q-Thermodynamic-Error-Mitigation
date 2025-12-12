@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
 Quick Competitive Comparison Tool
-Fast analysis of H2QEC + Alpha vs competitors for X fidelity and coherence
+Fast analysis of H2QEC + control-layer augmentation vs competitors for X fidelity and coherence
 """
 
 def quick_compare_ibm156():
     """Quick comparison against IBM 156-qubit system"""
     
-    # H2QEC + Alpha metrics (from validation)
+    # H2QEC + control-layer augmentation metrics (from validation)
     h2qec = {
-        "name": "H2QEC + Alpha",
+        "name": "H2QEC + Control Augmentation",
         "x_fidelity": 0.9995,  # 1Q gate fidelity
         "t2_coherence": 150.0,  # microseconds
         "logical_error": 0.0237,  # 2.37%
@@ -32,7 +32,7 @@ def quick_compare_ibm156():
     fp_reduction = ((ibm["false_positive"] - h2qec["false_positive"]) / ibm["false_positive"]) * 100
     
     print("=" * 70)
-    print("QUICK COMPARISON: H2QEC + Alpha vs IBM 156-Qubit")
+    print("QUICK COMPARISON: H2QEC + Control Augmentation vs IBM 156-Qubit")
     print("=" * 70)
     print()
     print(f"X Gate Fidelity:")
@@ -59,13 +59,13 @@ def quick_compare_ibm156():
     print("VALUE ADD SUMMARY:")
     print("=" * 70)
     print(f"✓ {fp_reduction:.1f}% fewer false positives (hysteresis filtering)")
-    print(f"✓ {error_reduction:.1f}% lower logical errors (5-tuple + Alpha)")
-    print(f"✓ {fid_improvement:.2f}% better X gate fidelity (Alpha-Murmuration)")
+    print(f"✓ {error_reduction:.1f}% lower logical errors (5-tuple + control augmentation)")
+    print(f"✓ {fid_improvement:.2f}% better X gate fidelity (control-layer timing augmentation)")
     print(f"✓ {t2_improvement:.1f}% longer coherence (combined effect)")
     print()
     print("Key Differentiators:")
     print("  • 5-tuple hysteresis: Prevents measurement oscillations")
-    print("  • Alpha timing: Resonates with vacuum coupling constant")
+    print("  • Control-layer augmentation: physics-informed timing family (details withheld in public repo)")
     print("  • Combined: Dual-layer error suppression")
     print("=" * 70)
 

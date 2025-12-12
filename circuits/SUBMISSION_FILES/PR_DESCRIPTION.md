@@ -12,7 +12,7 @@ This PR adds H²Q (Hysteretic Quantum Error Correction) circuit models to the cl
 
 ### Method
 
-H²Q treats quantum error syndromes as thermal fluctuations, applying hysteresis thresholds (φ = 2.67) to filter errors based on dwell-time persistence. This achieves 79.7% reduction in false positive error detection compared to standard error correction.
+H²Q treats quantum error syndromes as thermal fluctuations, applying a **domain-calibrated dual-threshold hysteresis filter** with **dwell-time persistence** to suppress transient measurement artifacts while preserving persistent error signals. This achieves a 79.7% reduction in false positive error detection compared to standard error correction.
 
 **Patent**: US Provisional Application 63/927,371 (Filed Nov 29, 2025)
 

@@ -36,7 +36,7 @@
 - **H²QEC Features:**
   - Hysteresis-based syndrome filtering
   - Dwell-time threshold (τ)
-  - Asymmetric threshold (φ ≈ 2.67 for QEC domain)
+  - Asymmetric threshold (κ\_QEC; domain-calibrated)
   - False positive reduction (target: 79.7% per patent claims)
 
 **Recommended Shots:** 8192 for production validation
@@ -118,7 +118,7 @@ A complete `circuit-models.json` file has been created at:
 
 This JSON file includes:
 - All circuit metadata
-- H²QEC-specific parameters (φ = 2.67, dwell-time thresholds)
+- H²QEC-specific parameters (κ\_QEC, dwell-time thresholds)
 - Validation metrics and targets
 - Circuit recommendations for different use cases
 - Hardware target information
@@ -127,19 +127,19 @@ This JSON file includes:
 
 ## H²QEC Parameters
 
-### Domain-Specific Threshold (φ)
-- **QEC Domain:** φ ≈ 2.67
+### Domain-Calibrated Asymmetry Ratio (κ)
+- **QEC Domain:** κ\_QEC (calibrated per backend/noise regime)
 - **Basis:** Derived from measurement disturbance
-- **Source:** H²QEC patent (US App. 63/927,371)
+- **Source:** patent filings (US App. 63/927,371)
 
 ### Dwell-Time Threshold (τ)
-- **Range:** 60-300 seconds
+- **Range:** configurable (measured in rounds/cycles)
 - **Purpose:** Minimum duration for error persistence before triggering correction
 - **H²QEC Feature:** Filters transient errors
 
 ### Asymmetric Thresholds
-- **θ_up:** θ_base × φ (upward transitions)
-- **θ_down:** θ_base / φ (downward transitions)
+- **θ_up:** θ_base × κ (upward transitions)
+- **θ_down:** θ_base / κ (downward transitions)
 - **Purpose:** Different sensitivity for state transitions
 
 ---
@@ -220,5 +220,7 @@ circuit = load_benchmark_circuit("H2QEC_Surface_5x5", circuits_dir="circuits")
 
 **Document prepared:** December 2025  
 **For questions:** Refer to H²QEC patent specification (US App. 63/927,371)
+
+
 
 

@@ -13,7 +13,7 @@
 
 **Contents:**
 - ✅ Title: H²QEC - Hysteretic Quantum Error Correction
-- ✅ Problem Description: Hysteresis-based syndrome filtering (φ = 2.67)
+- ✅ Problem Description: Hysteresis-based syndrome filtering (domain-calibrated κ\_QEC)
 - ✅ Mathematical Framework: Dwell-time thresholds and hysteretic filtering
 - ✅ Circuit Variants: All 6 circuits documented
 - ✅ Institutions: "Independent Research, Ken Mendoza"
@@ -27,7 +27,7 @@
 **Contents:**
 - ✅ Updated to Quantum Advantage Tracker format
 - ✅ All 6 circuits included with metadata
-- ✅ H²QEC parameters (φ = 2.67, dwell-time, thresholds)
+- ✅ H²QEC parameters (κ\_QEC, dwell-time, thresholds)
 - ✅ Validation results and statistical significance
 - ✅ Circuit recommendations for different use cases
 - ✅ Mathematical framework documentation
@@ -56,7 +56,7 @@ h2qec/
 ### Documentation
 - [x] README.md created with all required sections
 - [x] Problem description explains H²QEC and 79.7% false positive reduction
-- [x] Mathematical framework documented (φ = 2.67, dwell-time thresholds)
+- [x] Mathematical framework documented (κ\_QEC, dwell-time thresholds)
 - [x] All circuit variants documented
 - [x] Institutions listed: "Independent Research, Ken Mendoza"
 - [x] Patent references included (US App. 63/927,371)
@@ -72,7 +72,7 @@ h2qec/
 ### Metadata (circuit-models.json)
 - [x] Updated to Quantum Advantage Tracker format
 - [x] All circuits included with complete metadata
-- [x] H²QEC parameters documented (φ = 2.67)
+- [x] H²QEC parameters documented (κ\_QEC)
 - [x] Validation results included
 - [x] Hardware targets specified
 - [x] Recommended configurations provided
@@ -140,7 +140,7 @@ python -m json.tool circuit-models.json > /dev/null && echo "JSON is valid"
 This submission includes quantum error correction circuits implementing H²QEC (Hysteretic Quantum Error Correction), a novel approach that uses dual-threshold hysteresis gates to filter false positive syndrome detections. H²QEC achieves a **79.7% reduction in false positive rate** on IBM Quantum hardware (`ibm_fez`, `ibm_torino`), validated with statistical significance (Cohen's d = 10.59, p < 0.0001).
 
 **Key Features:**
-- Domain-specific asymmetric thresholds (φ = 2.67 for QEC)
+- Domain-specific asymmetric thresholds (κ\_QEC for QEC)
 - Dwell-time enforcement (τ = 60-300 seconds)
 - Hardware-validated on 156-qubit and 133-qubit systems
 - Patent-pending technology (US App. 63/927,371)
@@ -191,5 +191,7 @@ This submission includes quantum error correction circuits implementing H²QEC (
 
 **Submission Prepared:** December 2025  
 **Status:** ✅ Ready for Quantum Advantage Tracker submission
+
+
 
 
