@@ -20,6 +20,26 @@ To avoid disclosing implementation details that enable straightforward reimpleme
 
 **Job registry & audit trail:** see `IBM_QUANTUM_RUNS_DOCUMENTATION.md` and `HARDWARE_VALIDATION.md`.
 
+## FNMN Notebook: Beyond Best Practices Validation Battery
+This project follows a “FNMN Notebook” standard: we compensate for intentionally withheld implementation details by publishing a **systemic falsification-first validation battery** that would *fail loudly* if the method were only post-selection or overfitting.
+
+### What is locked (pre-registered)
+*   **Evaluation metric(s)** and pass/fail criteria are fixed before runs.
+*   **Run configuration** (backend, shots, number of repeats) is recorded.
+*   **Reporting includes kept-fraction** so improvements cannot be achieved by silently discarding most outcomes.
+
+### Falsification gates (designed to break the method)
+1. **Simulator vs simulator gate**: the pipeline should not create “improvement” when the data are already ideal.
+2. **Noise-injection gate**: under controlled injected noise, the method should move results toward a clean/simulator-constrained reference.
+3. **Cross-backend / cross-day gate**: the same locked settings should remain directionally consistent under device drift and different noise realizations.
+
+### Baselines and negative results
+*   We compare against simple baselines (e.g., naive thresholding / top-k style filters) and report when the method does **not** help. This is deliberate: it reduces narrative flexibility and increases reviewer trust.
+
+### How reviewers can verify without needing proprietary details
+*   **Job provenance** is provided via `results/submitted_jobs_*.json` registries and the analysis scripts support fetching by Job ID.
+*   The public repo focuses on *verification artifacts* (job IDs, run summaries, audit logs) rather than publishing a complete “how to tune and reproduce” recipe.
+
 ## Repository Structure
 *   `/results`: Raw JSON output from 17 independent validation runs on IBM Hardware.
 *   `/src`: Reference Python implementation of the H²Q-Bridge entropy engine.
