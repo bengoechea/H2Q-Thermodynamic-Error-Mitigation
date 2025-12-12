@@ -18,7 +18,7 @@ H²Q treats quantum error syndromes as thermal fluctuations, applying a **domain
 
 ### Implementation & Validation
 
-- **Code Repository**: [https://github.com/bengoechea/H2Q-Thermodynamic-Error-Mitigation](https://github.com/bengoechea/H2Q-Thermodynamic-Error-Mitigation)
+- **Code Repository**: This repository (includes public artifacts + job provenance)
 - **Hardware Validation**: Circuits ready for IBM Quantum systems (ibm_fez, ibm_torino)
 - **Target Platforms**: 49-70 qubit systems with Surface Code or Repetition Code support
 

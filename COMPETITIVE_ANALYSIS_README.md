@@ -59,7 +59,7 @@ Outputs:
 ### 4. **Logical Error Rate**
 - Overall system reliability
 - H2QEC: 2.37% (vs IBM 4.0%)
-- **Reduction: 40.8%** (5-tuple + Alpha)
+- **Reduction: 40.8%** (hysteresis + control-layer augmentation; details withheld in public repo)
 - **Source:** H2QEC validation (ibm_fez, job d4lutmiv0j9c73e5nvt0)
 
 ### 5. **Effective Circuit Depth** (Utility-Scale Metric)

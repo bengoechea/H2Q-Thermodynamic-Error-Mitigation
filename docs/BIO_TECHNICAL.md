@@ -113,7 +113,7 @@ The H²Q approach addresses fundamental challenges in QAOA (Quantum Approximate 
 
 ## Publications & Code
 
-- H²Q methodology documentation (GitHub: bengoechea/H2Q-Thermodynamic-Error-Mitigation)
+- H²Q methodology documentation (GitHub: bengoechea/QEC-IBM-Quantum-Advantage)
 - Quantum advantage tracking frameworks
 - Comparative analysis tools and benchmarks
 - Technical specifications and validation protocols

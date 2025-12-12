@@ -65,9 +65,11 @@ syndrome[3] = measure q[0];
 // MEASUREMENT
 // ============================================
 bit[5] data_out;
-for i in [0:5] {
-    data_out[i] = measure q[i];
-}
+data_out[0] = measure q[0];
+data_out[1] = measure q[1];
+data_out[2] = measure q[2];
+data_out[3] = measure q[3];
+data_out[4] = measure q[4];
 
 
 

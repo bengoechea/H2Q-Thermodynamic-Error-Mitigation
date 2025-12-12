@@ -15,7 +15,7 @@
 | **OLE 49Q L=6** | `49Q_OLE_circuit_L_6_b_0.25_delta0.15.qasm` | 49 | ~3744 | IBM Quantum Advantage benchmark (deeper) |
 | **OLE 70Q L=6** | `70Q_OLE_circuit_L_6_b_0.25_delta0.15.qasm` | 70 | ~3744 | IBM Quantum Advantage benchmark (larger) |
 
-**Location:** `/Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/`
+**Location:** `./circuits/` (from repo root)
 
 **Note:** These are OLE circuits, not standard QEC codes. H²QEC can be applied post-processing to analyze thermodynamic signatures.
 
@@ -114,7 +114,7 @@
 ## circuit-models.json Entry
 
 A complete `circuit-models.json` file has been created at:
-`/Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/circuit-models.json`
+`./circuits/circuit-models.json`
 
 This JSON file includes:
 - All circuit metadata
@@ -128,19 +128,13 @@ This JSON file includes:
 ## H²QEC Parameters
 
 ### Domain-Calibrated Asymmetry Ratio (κ)
-- **QEC Domain:** κ\_QEC (calibrated per backend/noise regime)
-- **Basis:** Derived from measurement disturbance
-- **Source:** patent filings (US App. 63/927,371)
+- Calibration-dependent and backend-specific. Implementable calibration formulas and tuned constants are withheld in the public repo.
 
 ### Dwell-Time Threshold (τ)
-- **Range:** configurable (measured in rounds/cycles)
-- **Purpose:** Minimum duration for error persistence before triggering correction
-- **H²QEC Feature:** Filters transient errors
+- Persistence gating is configurable (units depend on the experimental/control setting). Numeric settings and selection procedures are withheld in the public repo.
 
 ### Asymmetric Thresholds
-- **θ_up:** θ_base × κ (upward transitions)
-- **θ_down:** θ_base / κ (downward transitions)
-- **Purpose:** Different sensitivity for state transitions
+- Asymmetric decision thresholds create hysteresis (resistance to rapid state flips). Implementable formulas and tuned constants are withheld in the public repo.
 
 ---
 

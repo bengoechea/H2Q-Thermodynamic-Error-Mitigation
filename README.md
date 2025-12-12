@@ -94,19 +94,15 @@ In addition to the H²Q thermodynamic error‑mitigated estimate reported here, 
 
 The H²Q approach applies thermodynamic error mitigation by:
 
-1. **Hysteresis Filtering:** Measurement outcomes filtered using dual thresholds (`θ_on`, `θ_off`) that distinguish stable ground states from thermal noise
+1. **Hysteresis Filtering:** Measurement outcomes are filtered using a memory-based decision rule to suppress transient artifacts while preserving persistent signal structure
 2. **Free Energy Minimization:** Error distribution "cooled" to reveal true signal
 3. **Entropy-Based Confidence:** Physically-grounded intervals from Shannon entropy of filtered distribution
 
-See `/src/h2q_mitigation.py` for implementation. See [patent documentation](https://kenmendoza.com/patents) for theoretical foundations.
+See `/src/h2q_mitigation.py` for the public interface and `/results/` + job provenance for independent recomputation. Tuned constants, calibration heuristics, and proprietary mapping logic are intentionally withheld in the public repository; see patent references above.
 
-### The |H−S| Criterion
+### The |H−S| Criterion (High-Level Summary)
 
-The framework uses the divergence between Shannon entropy (H) and von Neumann entropy (S) as a quality metric:
-
-```
-Q = 1 − |H(p) − S(ρ)| / H_max
-```
+The framework references divergence between Shannon entropy \(H\) and von Neumann entropy \(S\) as a high-level quality signal. Implementable routing/selection rules and tuned thresholds are withheld in the public repo.
 
 When |H−S| < ε, the system admits efficient quantum representation—this criterion routes problems to their optimal computational substrate.
 
@@ -158,12 +154,7 @@ At moderate noise levels (δ² ≈ 0.02), H²Q demonstrates:
 
 ### Theoretical Basis
 
-The hysteresis thresholds derive from thermodynamic stability analysis:
-- `θ_on = 0.8`: Activation threshold (high-probability = low-energy = stable)
-- `θ_off = 0.3`: Deactivation threshold (low-probability = high-energy = noise)
-- `τ = 10`: Dwell time for state confirmation
-
-These values are empirically validated across multiple IBM Quantum backends and can be tuned for specific hardware noise profiles.
+Parameterization is calibration-dependent and can vary by backend, circuit family, and noise regime. The public repository does not publish implementable calibration formulas or tuned constants; the evaluation artifacts (job IDs + results) are included to support independent verification.
 
 ## Citation
 
@@ -175,7 +166,7 @@ If using this work, please cite:
   title = {H²Q Thermodynamic Error Mitigation: Quantum Advantage Tracker},
   year = {2025},
   note = {US Provisional Patent Applications 63/927,371 (Nov 29, 2025), 63/933,465 (Dec 8, 2025)},
-  url = {https://github.com/bengoechea/H2Q-Thermodynamic-Error-Mitigation}
+  url = {https://github.com/bengoechea/QEC-IBM-Quantum-Advantage}
 }
 ```
 

@@ -49,17 +49,17 @@ mkdir -p data/classically-verifiable-problems/circuit-models/h2qec
 
 ```bash
 # Copy QASM files
-cp /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/H2QEC_SURFACE_CODE_5x5.qasm \
+cp /path/to/QEC-IBM-Quantum-Advantage/circuits/H2QEC_SURFACE_CODE_5x5.qasm \
    data/classically-verifiable-problems/circuit-models/h2qec/
 
-cp /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/H2QEC_REPETITION_CODE_3q.qasm \
+cp /path/to/QEC-IBM-Quantum-Advantage/circuits/H2QEC_REPETITION_CODE_3q.qasm \
    data/classically-verifiable-problems/circuit-models/h2qec/
 
-cp /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/H2QEC_REPETITION_CODE_5q.qasm \
+cp /path/to/QEC-IBM-Quantum-Advantage/circuits/H2QEC_REPETITION_CODE_5q.qasm \
    data/classically-verifiable-problems/circuit-models/h2qec/
 
 # Copy README
-cp /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/README.md \
+cp /path/to/QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/README.md \
    data/classically-verifiable-problems/circuit-models/h2qec/
 ```
 
@@ -186,12 +186,12 @@ git push origin add-h2qec-circuits
 
 **Circuit Files Location:**
 ```
-/Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/
+./circuits/
 ```
 
 **Submission Files Location:**
 ```
-/Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/
+./circuits/SUBMISSION_FILES/
 ```
 
 **Target Repository Path:**

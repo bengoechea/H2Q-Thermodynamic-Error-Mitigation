@@ -1,7 +1,7 @@
 # Competitive Analysis: Quick Start Guide
 
 ## Current Location
-You are in: `/Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage`
+You are in the repository root directory.
 
 ## What You Can Run From Here (Root Directory)
 

@@ -2,7 +2,7 @@
 """
 DISCLAIMER: Current Status & Limitations (December 2024)
 
-This analysis compares H²QEC + Alpha hardware validation results (15 runs on IBM 
+This analysis compares H²QEC + control-layer augmentation hardware validation results (15 runs on IBM 
 Eagle/Heron processors) against representative industry metrics. 
 
 VALIDATED:
@@ -84,11 +84,11 @@ class CompetitiveAnalyzer:
         coherence_t2=150.0,  # microseconds (timing experiment; details withheld in public repo)
         logical_error_rate=0.0237,  # 2.37% from H2QEC validation (ibm_fez, job d4lutmiv0j9c73e5nvt0)
         false_positive_rate=0.0045,  # 0.45% from H2QEC validation (79.7% reduction from 2.23% baseline)
-        error_correction_method="5-tuple Hysteresis + control-layer augmentation",
+        error_correction_method="5-tuple hysteresis + control-layer augmentation",
         notes="Hardware validated on ibm_fez (127-qubit Eagle r3), ibm_torino (Heron/Eagle). "
               "Model-agnostic control logic applicable to superconducting and trapped-ion systems.",
-        parameter_source="Validation/H2QEC_Hardware_Validation_Summary.md, "
-                        "Internal hardware timing experiment (job IDs available upon request)"
+        parameter_source="Validation/H2QEC_Hardware_Validation_Summary.md; "
+                        "additional control-layer augmentation details withheld in public repo (job IDs available upon request)"
     )
     
     # Competitive benchmarks with inline citations
@@ -152,7 +152,7 @@ class CompetitiveAnalyzer:
             false_positive_rate=0.020,  # Estimated for trapped ion systems
             error_correction_method="Standard QEC",
             notes="Different technology platform (trapped ions). Longer native coherence times. "
-                  "H2QEC + Alpha is hardware-agnostic and applicable here as well.",
+                  "H2QEC + control-layer augmentation is hardware-agnostic and applicable here as well.",
             parameter_source="IonQ Aria system specs (https://ionq.com/systems/aria), "
                             "IonQ public specifications 2024-2025, typical trapped-ion performance metrics"
         ),
@@ -246,7 +246,7 @@ class CompetitiveAnalyzer:
         
         report = []
         report.append("=" * 80)
-        report.append("H2QEC + ALPHA INTEGRATION: COMPETITIVE VALUE-ADD ANALYSIS")
+        report.append("H2QEC + CONTROL-LAYER AUGMENTATION: COMPETITIVE VALUE-ADD ANALYSIS")
         report.append("=" * 80)
         report.append(f"Analysis Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         report.append("")
@@ -259,7 +259,7 @@ class CompetitiveAnalyzer:
         report.append("  Benchmarking Library (QOBLIB) evaluation methodology")
         report.append("  for practical quantum advantage assessment.")
         report.append("")
-        report.append("HARDWARE AGNOSTIC: H2QEC + Alpha is model- and hardware-agnostic")
+        report.append("HARDWARE AGNOSTIC: H2QEC + control-layer augmentation is model- and hardware-agnostic")
         report.append("  control logic applicable to:")
         report.append("  • Superconducting systems (IBM, Google)")
         report.append("  • Trapped-ion systems (IonQ, Quantinuum)")
@@ -267,7 +267,7 @@ class CompetitiveAnalyzer:
         report.append("")
         
         # H2QEC Baseline
-        report.append("H2QEC + ALPHA INTEGRATION BASELINE:")
+        report.append("H2QEC + CONTROL-LAYER AUGMENTATION BASELINE:")
         report.append("-" * 80)
         report.append(f"  System: {self.h2qec.name}")
         report.append(f"  Qubits: {self.h2qec.qubit_count}")
@@ -398,7 +398,7 @@ class CompetitiveAnalyzer:
         report.append("   → Reduces unnecessary correction cycles, improving fault-tolerant efficiency")
         report.append("")
         report.append(f"2. Error Correction Advantage: {best_error[1].logical_error_reduction:.1f}% vs {self.competitors[best_error[0]].name}")
-        report.append("   → 5-tuple automaton + Alpha timing reduces logical errors")
+        report.append("   → 5-tuple automaton + control-layer timing family reduces logical errors (details withheld in public repo)")
         report.append("   → Enables progress toward utility-scale, fault-tolerant quantum advantage")
         report.append("")
         report.append(f"3. Effective Circuit Depth: {best_depth[1].effective_circuit_depth:.2f}x vs {self.competitors[best_depth[0]].name}")
@@ -410,7 +410,7 @@ class CompetitiveAnalyzer:
         report.append("   → Physics-informed scheduling family (details withheld in public repo)")
         report.append("")
         report.append("5. Combined Value (Hardware-Agnostic):")
-        report.append("   → H2QEC (hysteresis) + Alpha (timing) = Dual-layer error suppression")
+        report.append("   → H2QEC (hysteresis) + control-layer augmentation = dual-layer error suppression")
         report.append("   → Physics-informed control + Control logic (5-tuple) = stability stack")
         report.append("   → Applicable to superconducting, trapped-ion, and other platforms")
         report.append("")
@@ -448,7 +448,7 @@ class CompetitiveAnalyzer:
 
 def main():
     """Quick comparison for IBM 156-qubit system"""
-    print("H2QEC + Alpha Integration: Competitive Analysis")
+    print("H2QEC + Control-Layer Augmentation: Competitive Analysis")
     print("=" * 80)
     
     # Create analyzer
@@ -464,7 +464,7 @@ def main():
     # Quick summary for IBM 156Q
     ibm_comparison = analyzer.calculate_value_add(analyzer.COMPETITORS["IBM_156Q_Standard"])
     print("\n" + "=" * 80)
-    print("QUICK SUMMARY: H2QEC + Alpha vs IBM 156-Qubit Standard")
+    print("QUICK SUMMARY: H2QEC + control-layer augmentation vs IBM 156-Qubit Standard")
     print("=" * 80)
     print(f"X Gate Fidelity Improvement: {ibm_comparison.fidelity_improvement_1q:+.2f}%")
     print(f"T2 Coherence Improvement: {ibm_comparison.coherence_improvement_t2:+.2f}%")

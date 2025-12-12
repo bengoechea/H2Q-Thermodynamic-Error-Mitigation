@@ -90,15 +90,12 @@
 **Finding**: All states kept (100% kept fraction)
 
 **Reason**:
-- All 16 states have relative probability > theta_off (0.2)
-- Dominant state (62.26%) sets high threshold
-- Even lowest states (0.07%) are above 0.2 relative to max
+- For the public evaluation configuration, all observed states were above the active filtering threshold for that run.
 
 **Interpretation**:
 - H²Q correctly identifies all states as significant
 - Conservative approach prevents over-filtering
-- With theta_off = 0.2, states with >20% of max count are kept
-- All states in this distribution meet this criterion
+- Thresholding behavior is calibration- and configuration-dependent; the public repo omits tuned defaults and calibration recipes.
 
 ---
 
@@ -179,9 +176,8 @@
    - Measure reproducibility
 
 2. **Parameter Optimization**:
-   - Test lower theta_off for VQE circuits
-   - May enable filtering of low-probability error states
-   - Optimize for structured distributions
+   - Calibration and parameter selection are intentionally not described as an implementable recipe in the public repo.
+   - Future work includes systematic comparisons against standard baselines (ZNE/CDR) under preregistered settings.
 
 3. **Baseline Comparisons**:
    - Compare with ZNE (Zero-Noise Extrapolation)

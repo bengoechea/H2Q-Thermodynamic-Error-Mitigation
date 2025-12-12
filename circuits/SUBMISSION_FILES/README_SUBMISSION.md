@@ -146,7 +146,7 @@ git commit -m "Add H²QEC (Hysteretic Quantum Error Correction) circuit models..
 
 ```bash
 cd /path/to/quantum-advantage-tracker
-bash /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/git-commands.sh
+bash /path/to/QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/git-commands.sh
 ```
 
 ### Option 2: Manual Steps
@@ -172,7 +172,7 @@ Follow the detailed guide in: `COMPLETE_SUBMISSION_GUIDE.md`
 
 **Source Circuits:**
 ```
-/Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/
+./circuits/
 ├── H2QEC_SURFACE_CODE_5x5.qasm
 ├── H2QEC_REPETITION_CODE_3q.qasm
 └── H2QEC_REPETITION_CODE_5q.qasm
@@ -180,7 +180,7 @@ Follow the detailed guide in: `COMPLETE_SUBMISSION_GUIDE.md`
 
 **Submission Files:**
 ```
-/Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/
+./circuits/SUBMISSION_FILES/
 ├── README.md                          # Tracker format README
 ├── circuit-models-json-entry.json     # JSON entry for circuit-models.json
 ├── issue-template-update.yml         # Issue template instructions

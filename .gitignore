@@ -149,6 +149,11 @@ circuits/SUBMISSION_FILES/COOLEY_CHECK_SUMMARY.md
 *COOLEY*.md
 *LEGAL_REVIEW*.md
 
+# Strategy / legal working docs (local only)
+docs/strategy-legal/
+private/
+ROSETTA_STONE*.md
+
 # Local/backup files
 *.local
 README.md.local
@@ -165,6 +170,12 @@ results/claims_evaluation.json
 results/h2q_theoretical_model.json
 # Keep results.json as example but ignore regenerated ones
 # results/results.json
+
+# Hardware run artifacts (keep job registries only)
+results/ole_results_*.json
+results/tracker_submission_*.json
+results/fnmn_notebook_*.json
+results/falsification_results_*.json
 
 # Temporary files
 *.tmp

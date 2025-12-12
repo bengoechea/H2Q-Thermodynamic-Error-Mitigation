@@ -1,7 +1,7 @@
 # Setting Realistic Expectations
 
 ## What This Repo Is
-H²QEC + Alpha is a **hardware-agnostic control-layer technique** that:
+H²QEC + control-layer augmentation is a **hardware-agnostic technique stack** that:
 - Reduces false-positive syndrome detection errors by ~80% on IBM hardware
 - Improves effective circuit depth through better error suppression
 - Provides reproducible Python analysis tools for quantum error correction
@@ -32,7 +32,7 @@ This repo is **not claiming**:
 ## Target Audience
 **This repo is for:**
 - Quantum error correction researchers evaluating control-layer techniques
-- IBM/Google/IonQ engineers considering hysteresis-based approaches
+- Engineers and reviewers evaluating decoder/mitigation approaches under real hardware noise
 - Patent examiners/TTOs assessing novelty vs prior art (ZNE, temporal averaging)
 
 **This repo is NOT for:**
@@ -56,7 +56,7 @@ This repo is **not claiming**:
 ## Honest Assessment
 **Where we are:**
 - Strong QEC-layer validation (15 runs, multiple backends)
-- Novel approach (hysteresis + alpha timing) with measurable impact
+- Novel approach (hysteresis + control-layer augmentation; implementation details withheld in the public repo) with measurable impact
 - Reproducible analysis framework for competitive benchmarking
 
 **What's missing:**

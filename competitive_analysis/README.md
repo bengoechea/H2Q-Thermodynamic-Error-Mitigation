@@ -1,6 +1,6 @@
-# Competitive Analysis: H2QEC + Alpha Integration
+# Competitive Analysis: H2QEC + Control-Layer Augmentation
 
-Quick tools to analyze the value-add of your 5-tuple hysteresis error correction with Alpha integration compared to competitors (IBM 156-qubit, Google, etc.).
+Quick tools to analyze the value-add of your 5-tuple hysteresis error correction with a patent-covered control-layer augmentation (implementation details withheld in the public repo) compared to competitors (IBM 156-qubit, Google, etc.).
 
 **Task Class:** Surface-code style QEC for sampling, variational algorithms (VQE), and expectation-value estimation workloads.
 

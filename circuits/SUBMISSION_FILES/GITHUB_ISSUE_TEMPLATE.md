@@ -23,16 +23,13 @@ Independent Research
 - US Provisional Application 63/933,465 (filed December 8, 2025)
 - Patent details: https://kenmendoza.com/patents
 
-**Implementation Repository:**
-- https://github.com/bengoechea/H2Q-Thermodynamic-Error-Mitigation
-
 **Method Explanation:**
 Thermodynamic error mitigation treating syndromes as thermal fluctuations with domain-calibrated hysteresis-based filtering. H²Q applies dual-threshold hysteresis gates with dwell-time enforcement to achieve 79.7% false positive reduction in quantum error correction.
 
 **Key Features:**
 - Domain-calibrated asymmetry ratio (κ\_QEC) for measurement-disturbance-dominated regimes
 - Dwell-time enforcement: τ (configurable; measured in rounds/cycles)
-- Asymmetric thresholds: θ\_up = κ·θ\_base, θ\_down = θ\_base/κ
+- Asymmetric decision thresholds (calibration-dependent; implementable formulas and tuned constants are intentionally omitted in the public repo)
 
 **Validation Results:**
 - False Positive Reduction: 79.7% (validated on `ibm_fez`, `ibm_torino`)
@@ -62,7 +59,7 @@ Select from dropdown:
 **Experimental Configuration:**
 - Shots: [Number]
 - Measurement rounds: [Number]
-- H²QEC parameters: κ\_QEC = [calibrated], τ = [value]
+- H²QEC parameters: calibration-dependent (exact values omitted in public repo)
 
 ---
 

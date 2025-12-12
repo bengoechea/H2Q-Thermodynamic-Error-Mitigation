@@ -61,7 +61,7 @@ All legal conditions have been satisfied. Submission may proceed immediately.
 cd /path/to/quantum-advantage-tracker
 
 # Execute submission script
-bash /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/git-commands.sh
+bash /path/to/QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/git-commands.sh
 ```
 
 ### Future Actions

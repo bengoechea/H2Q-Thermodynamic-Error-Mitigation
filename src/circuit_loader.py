@@ -18,6 +18,9 @@ CIRCUIT_FILES = {
     "70Q": "70Q_OLE_circuit_L_6_b_0.25_delta0.15.qasm",
     "49Q_L6": "49Q_OLE_circuit_L_6_b_0.25_delta0.15.qasm",
     "49Q_L3": "49Q_OLE_circuit_L_3_b_0.25_delta0.15.qasm",
+    # Falsification benchmarks with strong simulator ground truth
+    "REP3": "H2QEC_REPETITION_CODE_3q.qasm",
+    "REP5": "H2QEC_REPETITION_CODE_5q.qasm",
 }
 
 def load_benchmark_circuit(circuit_key="70Q", circuits_dir="circuits", num_qubits=None, depth=None):

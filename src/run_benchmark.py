@@ -27,6 +27,169 @@ from h2q_mitigation import H2QMitigator
 
 # Observable qubits for OLE benchmark: O = Z_52 Z_59 Z_72
 OBSERVABLE_QUBITS = [52, 59, 72]
+FALSIFICATION_CIRCUITS = {"REP3", "REP5"}
+
+def _canonical_bitstring(key, width: int | None) -> str:
+    """
+    Normalize count keys so simulator and hardware distributions are comparable.
+
+    - Qiskit counts often use spaces between classical registers (e.g. "00 000").
+    - Some backends may omit spaces or drop leading zeros.
+    - SamplerV2 may also return non-str keys in some versions.
+    """
+    if isinstance(key, str):
+        s = key.replace(" ", "")
+        # Handle hex-style keys if they appear
+        if s.startswith("0x"):
+            try:
+                n = int(s, 16)
+                if width is None:
+                    # best effort: keep minimal width
+                    return format(n, "b")
+                return format(n, f"0{width}b")
+            except Exception:
+                pass
+        if width is not None:
+            return s.zfill(width)
+        return s
+    if isinstance(key, int):
+        if width is None:
+            return format(key, "b")
+        return format(key, f"0{width}b")
+    # Fallback: stringify then strip spaces
+    s = str(key).replace(" ", "")
+    if width is not None:
+        return s.zfill(width)
+    return s
+
+
+def _normalize_counts(counts: dict, *, width: int | None = None) -> dict[str, float]:
+    total = sum(counts.values())
+    if total <= 0:
+        return {}
+    out: dict[str, float] = {}
+    for k, v in counts.items():
+        kk = _canonical_bitstring(k, width)
+        out[kk] = out.get(kk, 0.0) + (v / total)
+    return out
+
+
+def _total_variation_distance(p: dict[str, float], q: dict[str, float]) -> float:
+    """TVD(p,q) = 0.5 * sum_x |p(x) - q(x)|"""
+    keys = set(p.keys()) | set(q.keys())
+    return 0.5 * sum(abs(p.get(k, 0.0) - q.get(k, 0.0)) for k in keys)
+
+
+def _simulate_ideal_distribution(circuit, shots: int = 20000) -> dict[str, float]:
+    """
+    Simulator reference distribution for small falsification circuits.
+    Uses the same circuit/clbit ordering so distributions are comparable.
+    """
+    from qiskit_aer import AerSimulator
+
+    if not circuit.clbits:
+        circuit.measure_all()
+    sim = AerSimulator()
+    job = sim.run(circuit, shots=shots)
+    res = job.result()
+    counts = res.get_counts(0)
+    width = getattr(circuit, "num_clbits", None)
+    return _normalize_counts(counts, width=width)
+
+def _extract_counts_from_sampler_pub_result(pub_result, shots: int | None = None) -> dict:
+    """
+    Extract a counts dict from a SamplerV2 PubResult.
+    Handles multiple result shapes across Qiskit Runtime versions.
+    """
+    counts: dict = {}
+    data_bin = getattr(pub_result, "data", None)
+    if data_bin is None:
+        return counts
+
+    # SamplerV2 uses BitArray in meas attribute
+    if hasattr(data_bin, "meas"):
+        meas = data_bin.meas
+        if hasattr(meas, "get_counts"):
+            return meas.get_counts()
+        try:
+            return dict(meas)
+        except Exception:
+            return {}
+
+    # Common shape in newer primitives: DataBin(c=BitArray(...)) or similar values()
+    if hasattr(data_bin, "values"):
+        try:
+            for v in list(data_bin.values()):
+                if hasattr(v, "get_counts"):
+                    return v.get_counts()
+        except Exception:
+            pass
+
+    # Alternative: quasi_probs (approximate counts if shots provided)
+    if hasattr(data_bin, "quasi_probs") and shots is not None:
+        try:
+            quasi_probs = data_bin.quasi_probs
+            total_prob = sum(quasi_probs.values()) if quasi_probs else 0
+            if total_prob > 0:
+                approx: dict[str, int] = {}
+                for bitstring, prob in quasi_probs.items():
+                    if prob > 0:
+                        count = int((prob / total_prob) * shots)
+                        if count > 0:
+                            approx[bitstring] = count
+                return approx
+        except Exception:
+            pass
+
+    # Last resort: try get_counts on data_bin
+    if hasattr(data_bin, "get_counts"):
+        try:
+            return data_bin.get_counts()
+        except Exception:
+            return {}
+
+    return counts
+
+
+def fetch_counts_for_jobs(job_ids: list[str], shots_hint: int | None = None) -> tuple[list[dict], dict]:
+    """
+    Fetch results for existing Runtime job IDs and return (counts_list, metadata).
+    """
+    service = QiskitRuntimeService()
+    all_counts: list[dict] = []
+    meta: dict = {"jobs": []}
+
+    for jid in job_ids:
+        job = service.job(jid)
+        status = str(job.status())
+        backend_name = getattr(job.backend(), "name", None)
+        meta["jobs"].append(
+            {
+                "job_id": jid,
+                "status": status,
+                "backend": backend_name,
+                "creation_date": getattr(job, "creation_date", None).isoformat()
+                if getattr(job, "creation_date", None)
+                else None,
+            }
+        )
+
+        if status not in {"DONE", "COMPLETED"}:
+            raise RuntimeError(f"Job {jid} is not complete (status={status}).")
+
+        result = job.result()
+        # Sampler jobs return a list-like of pub results
+        pub_result = result[0]
+        counts = _extract_counts_from_sampler_pub_result(pub_result, shots=shots_hint)
+        if not counts:
+            raise RuntimeError(f"Job {jid}: failed to extract counts from result.")
+        all_counts.append(counts)
+
+    # best-effort: pick backend from first job
+    if meta["jobs"]:
+        meta["backend"] = meta["jobs"][0].get("backend")
+    return all_counts, meta
+
 
 def compute_observable(counts: dict, observable_qubits: list) -> tuple:
     """
@@ -107,39 +270,7 @@ def run_hardware(circuit, backend, shots: int, n_runs: int = 5) -> list:
             # Extract counts from SamplerV2 result
             # SamplerV2 returns PubResult with data in DataBin format
             pub_result = result[0]
-            counts = {}
-            
-            try:
-                data_bin = pub_result.data
-                
-                # SamplerV2 uses BitArray in meas attribute
-                if hasattr(data_bin, 'meas'):
-                    meas = data_bin.meas
-                    if hasattr(meas, 'get_counts'):
-                        counts = meas.get_counts()
-                    else:
-                        # Fallback: BitArray might need conversion
-                        counts = dict(meas)
-                
-                # Alternative: check for quasi_probs (if available)
-                elif hasattr(data_bin, 'quasi_probs'):
-                    quasi_probs = data_bin.quasi_probs
-                    total_prob = sum(quasi_probs.values()) if quasi_probs else 0
-                    if total_prob > 0:
-                        for bitstring, prob in quasi_probs.items():
-                            if prob > 0:
-                                count = int((prob / total_prob) * shots)
-                                if count > 0:
-                                    counts[bitstring] = count
-                
-                # Last resort: try get_counts on data_bin
-                elif hasattr(data_bin, 'get_counts'):
-                    counts = data_bin.get_counts()
-                    
-            except Exception as e:
-                print(f"\n    Error extracting counts: {e}")
-                import traceback
-                traceback.print_exc()
+            counts = _extract_counts_from_sampler_pub_result(pub_result, shots=shots)
             
             # Ensure we have counts
             if not counts:
@@ -153,6 +284,23 @@ def run_hardware(circuit, backend, shots: int, n_runs: int = 5) -> list:
             print(f"Done. Job ID: {job.job_id()}")
     
     return all_counts
+
+
+def submit_only(circuit, backend, shots: int, n_runs: int) -> list[str]:
+    """
+    Submit hardware jobs and return job IDs (do not wait for results).
+    Use this when you have limited remaining quantum time or long queue waits.
+    """
+    print(f"\nSubmitting on {backend.name} ({n_runs} runs × {shots} shots) (submit-only)...")
+    job_ids: list[str] = []
+    with Batch(backend=backend) as batch:
+        sampler = SamplerV2(mode=batch)
+        for i in range(n_runs):
+            job = sampler.run([circuit], shots=shots)
+            jid = job.job_id()
+            job_ids.append(jid)
+            print(f"  Submitted {i+1}/{n_runs}: {jid}  https://quantum.ibm.com/jobs/{jid}")
+    return job_ids
 
 def run_simulation(circuit, shots: int, n_runs: int = 5) -> list:
     """
@@ -275,11 +423,138 @@ def analyze_results(all_counts: list, mitigator: H2QMitigator) -> dict:
         "n_runs": len(all_counts),
     }
 
+
+def analyze_falsification(all_counts: list[dict], ideal_probs: dict[str, float], mitigator: H2QMitigator) -> dict:
+    """
+    Falsification: does mitigation move the observed distribution closer to simulator 'ideal'?
+    Metric: total variation distance (TVD) to the ideal distribution.
+    Success criterion: mean(TVD_mitigated) < mean(TVD_raw) with non-trivial kept_fraction.
+    """
+    from scipy import stats
+
+    tvd_raw_list: list[float] = []
+    tvd_mit_list: list[float] = []
+    kept_fractions: list[float] = []
+    debug: dict = {
+        "fnmn_notebook": True,
+        "ideal_support_size_full": len(ideal_probs),
+        "ideal_top10_full": sorted(ideal_probs.items(), key=lambda kv: kv[1], reverse=True)[:10],
+        "per_run": [],
+    }
+
+    for counts in all_counts:
+        # infer a stable width so we can zfill and align support
+        width = None
+        try:
+            width = max(len(_canonical_bitstring(k, None)) for k in counts.keys()) if counts else None
+        except Exception:
+            width = None
+
+        p_raw = _normalize_counts(counts, width=width)
+
+        # Project simulator ideal distribution onto the same observed bit-width as hardware.
+        # Empirically, SamplerV2 on these QASM circuits returns only the syndrome register.
+        # We model that as the *last* `width` bits of the simulator key string.
+        ideal_eff: dict[str, float] = {}
+        if width is not None and width > 0:
+            for k_full, p in ideal_probs.items():
+                k_eff = _canonical_bitstring(k_full, None)[-width:]
+                ideal_eff[k_eff] = ideal_eff.get(k_eff, 0.0) + p
+        else:
+            ideal_eff = dict(ideal_probs)
+
+        # Renormalize (defensive: projection should preserve sum=1)
+        s_eff = sum(ideal_eff.values())
+        if s_eff > 0 and abs(s_eff - 1.0) > 1e-6:
+            ideal_eff = {k: v / s_eff for k, v in ideal_eff.items()}
+
+        tvd_raw = _total_variation_distance(p_raw, ideal_eff)
+        tvd_raw_list.append(tvd_raw)
+
+        total = sum(counts.values())
+        max_count = max(counts.values()) if counts else 0
+
+        # Same threshold rule as the OLE mitigation path (locked parameterization)
+        filtered_counts: dict = {}
+        for bitstring, count in counts.items():
+            relative_prob = count / max_count if max_count > 0 else 0
+            if relative_prob > mitigator.theta_off:
+                filtered_counts[bitstring] = count
+
+        filtered_total = sum(filtered_counts.values())
+        if filtered_total > 0:
+            p_mit = _normalize_counts(filtered_counts, width=width)
+            tvd_mit = _total_variation_distance(p_mit, ideal_eff)
+            tvd_mit_list.append(tvd_mit)
+            kept_fractions.append(filtered_total / total if total > 0 else 0.0)
+        else:
+            # If everything is rejected, define as failure (no improvement) and kept=0.
+            tvd_mit = tvd_raw
+            tvd_mit_list.append(tvd_mit)
+            kept_fractions.append(0.0)
+
+        # FNMN Notebook per-run trace
+        raw_keys = list(counts.keys())
+        debug["per_run"].append(
+            {
+                "inferred_width": width,
+                "ideal_support_size_effective": len(ideal_eff),
+                "ideal_top10_effective": sorted(ideal_eff.items(), key=lambda kv: kv[1], reverse=True)[:10],
+                "raw_key_samples": [repr(k) for k in raw_keys[:10]],
+                "raw_key_samples_canonical": [_canonical_bitstring(k, width) for k in raw_keys[:10]],
+                "raw_top10": sorted(p_raw.items(), key=lambda kv: kv[1], reverse=True)[:10],
+                "tvd_raw": tvd_raw,
+                "tvd_mitigated": tvd_mit,
+                "kept_fraction": kept_fractions[-1],
+            }
+        )
+
+    def compute_ci(values, confidence=0.95):
+        if len(values) == 0:
+            return 0.0, 0.0, 0.0
+        mean = float(np.mean(values))
+        if len(values) == 1:
+            return mean, mean, mean
+        sem = stats.sem(values)
+        if float(sem) == 0.0:
+            return mean, mean, mean
+        ci = stats.t.interval(confidence, len(values) - 1, loc=mean, scale=sem)
+        return mean, float(ci[0]), float(ci[1])
+
+    raw_mean, raw_lo, raw_hi = compute_ci(tvd_raw_list)
+    mit_mean, mit_lo, mit_hi = compute_ci(tvd_mit_list)
+
+    return {
+        "notebook": debug,
+        "metric": "tvd_to_simulator_ideal",
+        "raw": {
+            "mean": raw_mean,
+            "ci_lower": raw_lo,
+            "ci_upper": raw_hi,
+            "all_values": tvd_raw_list,
+        },
+        "mitigated": {
+            "mean": mit_mean,
+            "ci_lower": mit_lo,
+            "ci_upper": mit_hi,
+            "all_values": tvd_mit_list,
+        },
+        "kept_fraction": {
+            "mean": float(np.mean(kept_fractions)) if kept_fractions else 0.0,
+            "std": float(np.std(kept_fractions)) if kept_fractions else 0.0,
+        },
+        "improvement": {
+            "delta_mean": raw_mean - mit_mean,  # positive is good (lower TVD after mitigation)
+        },
+        "n_runs": len(all_counts),
+    }
+
 def save_results(results: dict, config: dict, output_dir: str = "results"):
     """Save results in tracker-compatible format."""
     os.makedirs(output_dir, exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    mode = config.get("mode", "ole")
     
     # Full results
     full_output = {
@@ -289,9 +564,11 @@ def save_results(results: dict, config: dict, output_dir: str = "results"):
             "backend": config["backend"],
             "shots": config["shots"],
             "n_runs": config["n_runs"],
-            "observable": "Z_52 Z_59 Z_72",
+            "observable": "Z_52 Z_59 Z_72" if mode == "ole" else None,
+            "metric": "tvd_to_simulator_ideal" if mode == "falsification" else None,
             "method": "H2Q Thermodynamic Error Mitigation",
             "patent": "US Provisional 63/927,371",
+            **({"job_ids": config["job_ids"]} if config.get("job_ids") else {}),
         },
         "results": results,
         "h2q_config": {
@@ -301,7 +578,8 @@ def save_results(results: dict, config: dict, output_dir: str = "results"):
         }
     }
     
-    filename = f"ole_results_{config['circuit']}_{config['backend']}_{timestamp}.json"
+    prefix = "ole_results" if mode == "ole" else "fnmn_notebook"
+    filename = f"{prefix}_{config['circuit']}_{config['backend']}_{timestamp}.json"
     filepath = Path(output_dir) / filename
     
     with open(filepath, "w") as f:
@@ -309,6 +587,9 @@ def save_results(results: dict, config: dict, output_dir: str = "results"):
     
     print(f"\nResults saved to: {filepath}")
     
+    if mode != "ole":
+        return filepath, None
+
     # Also save tracker-compatible summary
     tracker_output = {
         "circuit_model": f"operator_loschmidt_echo_{config['circuit'].lower()}",
@@ -347,26 +628,57 @@ def save_results(results: dict, config: dict, output_dir: str = "results"):
 def print_summary(results: dict, config: dict):
     """Print human-readable summary."""
     print("\n" + "="*60)
-    print("H²Q BENCHMARK RESULTS SUMMARY")
+    if config.get("mode") == "falsification":
+        print("FNMN NOTEBOOK (Falsification Protocol)")
+    else:
+        print("H²Q BENCHMARK RESULTS SUMMARY")
     print("="*60)
     print(f"Circuit: {config['circuit']}")
     print(f"Backend: {config['backend']}")
     print(f"Shots per run: {config['shots']}")
     print(f"Number of runs: {config['n_runs']}")
     print("-"*60)
-    print(f"Observable: O = Z_52 Z_59 Z_72")
-    print("-"*60)
-    print("RAW (unmitigated):")
-    print(f"  <O> = {results['raw']['mean']:.6f}")
-    print(f"  95% CI: [{results['raw']['ci_lower']:.6f}, {results['raw']['ci_upper']:.6f}]")
-    print("-"*60)
-    print("H²Q MITIGATED:")
-    print(f"  <O> = {results['mitigated']['mean']:.6f}")
-    print(f"  95% CI: [{results['mitigated']['ci_lower']:.6f}, {results['mitigated']['ci_upper']:.6f}]")
-    print("-"*60)
-    print("MITIGATION METRICS:")
-    print(f"  Kept fraction: {results['kept_fraction']['mean']*100:.1f}%")
-    print(f"  Entropy reduction: {results['entropy_reduction']['mean']:.3f} bits")
+    if config.get("mode") == "falsification":
+        print("Metric: TVD to simulator ideal (lower is better)")
+        print("-"*60)
+        print("RAW (unmitigated):")
+        print(f"  TVD = {results['raw']['mean']:.6f}")
+        print(f"  95% CI: [{results['raw']['ci_lower']:.6f}, {results['raw']['ci_upper']:.6f}]")
+        print("-"*60)
+        print("H²Q MITIGATED:")
+        print(f"  TVD = {results['mitigated']['mean']:.6f}")
+        print(f"  95% CI: [{results['mitigated']['ci_lower']:.6f}, {results['mitigated']['ci_upper']:.6f}]")
+        print("-"*60)
+        print("MITIGATION METRICS:")
+        print(f"  Kept fraction: {results['kept_fraction']['mean']*100:.1f}%")
+        print(f"  Δ(mean TVD) = {results['improvement']['delta_mean']:.6f}  (positive = closer to ideal)")
+        # High-signal notebook trace
+        if isinstance(results.get("notebook"), dict):
+            nb = results["notebook"]
+            print("-"*60)
+            print("FNMN Notebook Trace (top keys / key formatting):")
+            ideal_top = nb.get("ideal_top10", [])
+            if ideal_top:
+                print("  Ideal top-5:", ideal_top[:5])
+            per_run = nb.get("per_run", [])
+            if per_run:
+                print("  Run0 inferred_width:", per_run[0].get("inferred_width"))
+                print("  Run0 raw_key_samples:", per_run[0].get("raw_key_samples"))
+                print("  Run0 raw_key_samples_canonical:", per_run[0].get("raw_key_samples_canonical"))
+    else:
+        print(f"Observable: O = Z_52 Z_59 Z_72")
+        print("-"*60)
+        print("RAW (unmitigated):")
+        print(f"  <O> = {results['raw']['mean']:.6f}")
+        print(f"  95% CI: [{results['raw']['ci_lower']:.6f}, {results['raw']['ci_upper']:.6f}]")
+        print("-"*60)
+        print("H²Q MITIGATED:")
+        print(f"  <O> = {results['mitigated']['mean']:.6f}")
+        print(f"  95% CI: [{results['mitigated']['ci_lower']:.6f}, {results['mitigated']['ci_upper']:.6f}]")
+        print("-"*60)
+        print("MITIGATION METRICS:")
+        print(f"  Kept fraction: {results['kept_fraction']['mean']*100:.1f}%")
+        print(f"  Entropy reduction: {results['entropy_reduction']['mean']:.3f} bits")
     print("="*60)
 
 def main():
@@ -375,9 +687,9 @@ def main():
     )
     parser.add_argument(
         "--circuit", 
-        choices=["70Q", "49Q_L6", "49Q_L3"],
+        choices=["70Q", "49Q_L6", "49Q_L3", "REP3", "REP5"],
         default="49Q_L3",
-        help="Circuit to run (default: 49Q_L3 for testing)"
+        help="Circuit to run (default: 49Q_L3 for testing). Use REP3/REP5 for falsification."
     )
     parser.add_argument(
         "--backend",
@@ -402,6 +714,21 @@ def main():
         help="Run on simulator instead of hardware"
     )
     parser.add_argument(
+        "--submit-only",
+        action="store_true",
+        help="Submit job(s) and print Job IDs without waiting for results"
+    )
+    parser.add_argument(
+        "--job-ids",
+        default="",
+        help="Comma-separated Runtime job IDs to fetch + analyze (no submission)"
+    )
+    parser.add_argument(
+        "--job-registry",
+        default="",
+        help="Path to a submitted_jobs_*.json registry file to fetch + analyze"
+    )
+    parser.add_argument(
         "--theta-on",
         type=float,
         default=0.8,
@@ -421,32 +748,75 @@ def main():
     )
     
     args = parser.parse_args()
-    
-    # Load circuit
-    circuit = load_benchmark_circuit(args.circuit)
-    
-    # Setup
-    if args.simulate:
-        print("\n*** SIMULATION MODE ***")
-        backend_name = "aer_simulator"
-        all_counts = run_simulation(circuit, args.shots, args.n_runs)
+
+    # Fetch mode (no submission)
+    job_ids: list[str] = []
+    if args.job_ids.strip():
+        job_ids = [x.strip() for x in args.job_ids.split(",") if x.strip()]
+    if args.job_registry.strip():
+        with open(args.job_registry, "r") as f:
+            reg = json.load(f)
+        job_ids = [str(x) for x in reg.get("job_ids", [])]
+        # If registry contains shots/backend/circuit, use as defaults when CLI omitted
+        if not args.backend and reg.get("backend"):
+            args.backend = reg["backend"]
+        if reg.get("shots"):
+            args.shots = int(reg["shots"])
+        if reg.get("circuit"):
+            args.circuit = reg["circuit"]
+
+    if job_ids:
+        print("\nFetching existing Runtime jobs (no submission)...")
+        all_counts, fetch_meta = fetch_counts_for_jobs(job_ids, shots_hint=args.shots or None)
+        backend_name = fetch_meta.get("backend") or "unknown-backend"
+        # Proceed to mitigation+analysis below, and attach provenance later
+        # If we need simulator ground truth (falsification), load the circuit now.
+        circuit = load_benchmark_circuit(args.circuit)
     else:
-        # Connect to IBM Quantum
-        print("\nConnecting to IBM Quantum...")
-        service = QiskitRuntimeService()
-        backend = service.backend(args.backend)
-        backend_name = backend.name
-        
-        print(f"Backend: {backend_name}")
-        print(f"Qubits: {backend.num_qubits}")
-        
-        # Transpile
-        transpiled = transpile_for_backend(circuit, backend)
-        
-        # Run
-        all_counts = run_hardware(transpiled, backend, args.shots, args.n_runs)
+
+        # Load circuit
+        circuit = load_benchmark_circuit(args.circuit)
+
+        # Setup
+        if args.simulate:
+            print("\n*** SIMULATION MODE ***")
+            backend_name = "aer_simulator"
+            all_counts = run_simulation(circuit, args.shots, args.n_runs)
+        else:
+            # Connect to IBM Quantum
+            print("\nConnecting to IBM Quantum...")
+            service = QiskitRuntimeService()
+            backend = service.backend(args.backend)
+            backend_name = backend.name
+
+            print(f"Backend: {backend_name}")
+            print(f"Qubits: {backend.num_qubits}")
+
+            # Transpile
+            transpiled = transpile_for_backend(circuit, backend)
+            if args.submit_only:
+                job_ids = submit_only(transpiled, backend, args.shots, args.n_runs)
+                # Minimal on-disk provenance (no results yet)
+                os.makedirs("results", exist_ok=True)
+                stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                out = {
+                    "timestamp": datetime.now().isoformat(),
+                    "backend": backend_name,
+                    "circuit": args.circuit,
+                    "shots": args.shots,
+                    "n_runs": args.n_runs,
+                    "job_ids": job_ids,
+                }
+                path = Path("results") / f"submitted_jobs_{args.circuit}_{backend_name}_{stamp}.json"
+                with open(path, "w") as f:
+                    json.dump(out, f, indent=2)
+                print(f"\nSaved job registry: {path}")
+                return
+
+            # Run (wait for results)
+            all_counts = run_hardware(transpiled, backend, args.shots, args.n_runs)
     
-    # Setup mitigator
+    # Setup mitigator (locked parameters)
     mitigator = H2QMitigator(
         theta_on=args.theta_on,
         theta_off=args.theta_off,
@@ -454,18 +824,28 @@ def main():
     )
     
     # Analyze
-    results = analyze_results(all_counts, mitigator)
+    if args.circuit in FALSIFICATION_CIRCUITS:
+        ideal_probs = _simulate_ideal_distribution(circuit, shots=20000)
+        results = analyze_falsification(all_counts, ideal_probs, mitigator)
+        mode = "falsification"
+    else:
+        results = analyze_results(all_counts, mitigator)
+        mode = "ole"
     
     # Save
     config = {
         "circuit": args.circuit,
         "backend": backend_name,
         "shots": args.shots,
-        "n_runs": args.n_runs,
+        # Always reflect what we actually analyzed (esp. fetch mode)
+        "n_runs": len(all_counts),
         "theta_on": args.theta_on,
         "theta_off": args.theta_off,
         "tau": args.tau,
+        "mode": mode,
     }
+    if job_ids:
+        config["job_ids"] = job_ids
     
     save_results(results, config)
     

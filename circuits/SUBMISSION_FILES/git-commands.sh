@@ -12,10 +12,10 @@ git checkout -b add-h2qec-circuits
 mkdir -p data/classically-verifiable-problems/circuit-models/h2qec
 
 # Copy circuit files
-cp /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/H2QEC_SURFACE_CODE_5x5.qasm data/classically-verifiable-problems/circuit-models/h2qec/
-cp /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/H2QEC_REPETITION_CODE_3q.qasm data/classically-verifiable-problems/circuit-models/h2qec/
-cp /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/H2QEC_REPETITION_CODE_5q.qasm data/classically-verifiable-problems/circuit-models/h2qec/
-cp /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/README.md data/classically-verifiable-problems/circuit-models/h2qec/
+cp ../QEC-IBM-Quantum-Advantage/circuits/H2QEC_SURFACE_CODE_5x5.qasm data/classically-verifiable-problems/circuit-models/h2qec/
+cp ../QEC-IBM-Quantum-Advantage/circuits/H2QEC_REPETITION_CODE_3q.qasm data/classically-verifiable-problems/circuit-models/h2qec/
+cp ../QEC-IBM-Quantum-Advantage/circuits/H2QEC_REPETITION_CODE_5q.qasm data/classically-verifiable-problems/circuit-models/h2qec/
+cp ../QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/README.md data/classically-verifiable-problems/circuit-models/h2qec/
 
 # Stage files
 git add data/classically-verifiable-problems/circuit-models/h2qec/
@@ -33,7 +33,7 @@ Author: Kenneth A Mendoza
 - Target: 79.7% false positive reduction
 - Patent: US Provisional 63/927,371
 
-Implementation: https://github.com/bengoechea/H2Q-Thermodynamic-Error-Mitigation"
+Implementation: this repository (public artifacts + job provenance; tuned calibration details withheld)"
 
 echo "✅ Files staged and committed. Ready to push and create PR!"
 

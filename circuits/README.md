@@ -11,7 +11,7 @@
 
 H²QEC (Hysteretic Quantum Error Correction) addresses the critical challenge of **false positive syndrome detection** in quantum error correction by applying **hysteretic filtering** to quantum error syndromes. Traditional QEC decoders trigger corrections on every non-zero syndrome measurement, leading to unnecessary corrections that degrade logical fidelity.
 
-H²QEC introduces a **dual-threshold hysteresis gate** with domain-calibrated asymmetric thresholds (κ\_QEC for QEC) that filters transient measurement errors while preserving persistent error signals. This approach achieves a **79.7% reduction in false positive syndrome detections** on IBM Quantum hardware, validated across multiple error correction codes.
+H²QEC introduces a **memory-based (hysteretic) filtering layer** for syndromes that suppresses transient measurement artifacts while preserving persistent error signals. This repository includes circuits and validation artifacts demonstrating a **79.7% reduction in false positive syndrome detections** on IBM Quantum hardware.
 
 ### Key Innovation
 
@@ -27,28 +27,11 @@ Unlike conventional QEC decoders that apply corrections immediately upon syndrom
 
 ### Hysteresis Gate Function
 
-The H²QEC hysteresis gate implements a dual-threshold system:
-
-```
-θ_up = θ_base × κ
-θ_down = θ_base / κ
-```
-
-Where:
-- **θ_base:** Domain-calibrated base threshold
-- **κ\_QEC:** QEC domain-calibrated asymmetry ratio (derived from measurement-disturbance-dominated regimes)
-- **θ_up:** Threshold for transitioning from "no error" to "error detected" state
-- **θ_down:** Threshold for transitioning from "error detected" to "no error" state
+The public repository describes the hysteretic filtering concept at a high level, but **does not publish implementable calibration formulas, tuned constants, or proprietary mapping logic**. These details are covered by filed patent applications and are intentionally withheld to avoid straightforward reimplementation.
 
 ### Dwell-Time Enforcement
 
-A syndrome must persist for at least **τ** measurement cycles before triggering correction:
-
-```
-correction_triggered = (state == ERROR_DETECTED) AND (dwell_time >= τ)
-```
-
-This filters transient measurement errors while preserving persistent error signals.
+The core idea is **persistence gating**: a syndrome pattern must be stable over a minimum window before it is treated as actionable. Exact persistence rules and thresholds are **calibration-dependent** and omitted here.
 
 ### False Positive Reduction
 
@@ -80,10 +63,7 @@ Validated on IBM hardware with statistical significance: **Cohen's d = 10.59, p 
 - H²QEC Integration Point: Syndrome measurements feed into H²QEC hysteresis gate for filtering
 - Measurement: Stabilizer qubits measured to read out syndrome pattern
 
-**Recommended Configuration:**
-- Shots: 8192
-- Measurement rounds: 20-50 rounds for dwell-time validation
-- Expected runtime: 30-60 minutes on IBM hardware
+**Recommended Configuration:** Depends on backend availability and queue time. Use modest shot counts for quick validation; scale up only for statistical power.
 
 ---
 
@@ -102,10 +82,7 @@ Validated on IBM hardware with statistical significance: **Cohen's d = 10.59, p 
 - H²QEC Integration: Syndrome pattern analyzed by hysteresis gate
 - Error Detection: Identifies which qubit has error (if any)
 
-**Recommended Configuration:**
-- Shots: 1024
-- Measurement rounds: 10-20 rounds
-- Expected runtime: 1-2 minutes
+**Recommended Configuration:** Use modest shots for rapid checks; scale runs/shots to improve confidence intervals.
 
 ---
 
@@ -124,10 +101,7 @@ Validated on IBM hardware with statistical significance: **Cohen's d = 10.59, p 
 - H²QEC Integration: Syndrome pattern filtered by hysteresis gate
 - Error Correction: Can correct single-qubit X errors
 
-**Recommended Configuration:**
-- Shots: 2048
-- Measurement rounds: 15-30 rounds
-- Expected runtime: 5-10 minutes
+**Recommended Configuration:** Use modest shots for rapid checks; scale runs/shots to improve confidence intervals.
 
 ---
 
@@ -153,26 +127,19 @@ Validated on IBM hardware with statistical significance: **Cohen's d = 10.59, p 
 
 ---
 
-## H²QEC Parameters
+## H²QEC Parameters (Public Summary)
 
 ### Domain-Calibrated Asymmetry Ratio (κ)
 
-For Quantum Error Correction domain:
-- **κ\_QEC:** calibrated per backend/noise regime
-- **Basis:** derived from measurement disturbance in quantum error correction
-- **Source:** patent filings (US App. 63/927,371) and validation artifacts in this repository
+H²QEC uses domain- and backend-calibrated asymmetry in its filtering dynamics. Specific calibration rules and numeric settings are intentionally omitted from the public repo.
 
 ### Dwell-Time Threshold (τ)
 
-- **Range:** configurable (measured in rounds/cycles)
-- **Purpose:** Minimum duration for error persistence before triggering correction
-- **Effect:** Filters transient measurement errors while preserving persistent errors
+Persistence windows are configurable and calibration-dependent. The public repo avoids prescribing numeric values or units as these are implementation- and backend-specific.
 
 ### Asymmetric Thresholds
 
-- **θ_up = θ_base × κ:** Threshold for detecting new errors (more sensitive)
-- **θ_down = θ_base / κ:** Threshold for clearing error state (less sensitive)
-- **Purpose:** Creates hysteresis loop that resists premature state transitions
+H²QEC uses asymmetric decision thresholds to create hysteresis (resistance to rapid state flips). Exact formulas and calibrated values are withheld.
 
 ---
 
@@ -198,60 +165,7 @@ For Quantum Error Correction domain:
 
 ## Usage Instructions
 
-### Loading Circuits
-
-```python
-from qiskit import QuantumCircuit
-from qiskit.qasm3 import loads as load_qasm3
-
-# Load H²QEC Surface Code
-with open('H2QEC_SURFACE_CODE_5x5.qasm', 'r') as f:
-    qasm_content = f.read()
-circuit = load_qasm3(qasm_content)
-
-print(f"Qubits: {circuit.num_qubits}")
-print(f"Depth: {circuit.depth()}")
-```
-
-### Applying H²QEC Hysteresis Filtering
-
-```python
-from src.h2q_mitigation import HysteresisDecoder
-
-# Initialize H²QEC decoder
-decoder = HysteresisDecoder(
-    theta_low=0.3,
-    theta_high=0.8,
-    tau_dwell=2,  # Minimum 2 rounds
-    kappa=...     # QEC domain-calibrated
-)
-
-# Process syndrome measurements
-for syndrome_confidence in syndrome_measurements:
-    state, correction = decoder.update(syndrome_confidence)
-    if correction:
-        apply_error_correction()
-```
-
-### Running on IBM Hardware
-
-```python
-from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2
-
-service = QiskitRuntimeService()
-backend = service.backend("ibm_fez")
-
-# Load circuit
-circuit = load_qasm3(qasm_content)
-
-# Execute with H²QEC post-processing
-sampler = SamplerV2(backend=backend)
-job = sampler.run([circuit], shots=8192)
-results = job.result()
-
-# Apply H²QEC hysteresis filtering to results
-filtered_results = apply_h2qec_filtering(results, kappa=..., tau=2)
-```
+Usage guidance is intentionally high-level in the public repo. Reviewers can verify results using the included job provenance, run artifacts, and analysis scripts without requiring disclosure of tuned constants or proprietary calibration logic.
 
 ---
 

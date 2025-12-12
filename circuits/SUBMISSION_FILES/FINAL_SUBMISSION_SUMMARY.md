@@ -12,7 +12,7 @@
 ### ✅ Key Changes Applied
 
 1. **Author Name:** Updated to "Kenneth A Mendoza" (legal name)
-2. **GitHub Repository:** Added link to https://github.com/bengoechea/H2Q-Thermodynamic-Error-Mitigation
+2. **GitHub Repository:** Added link to this repository (public artifacts + job provenance)
 3. **Patent Documentation:** Added link to https://kenmendoza.com/patents
 4. **Gate Counts:** Verified (163, 13, 23 gates)
 5. **Patent Reference:** US Provisional Application 63/927,371
@@ -147,7 +147,7 @@ SUBMISSION_FILES/
 cd /path/to/quantum-advantage-tracker
 
 # Execute submission script
-bash /Users/kenbengoetxea/container-projects/apps/claude_desktop/QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/git-commands.sh
+bash /path/to/QEC-IBM-Quantum-Advantage/circuits/SUBMISSION_FILES/git-commands.sh
 ```
 
 ---

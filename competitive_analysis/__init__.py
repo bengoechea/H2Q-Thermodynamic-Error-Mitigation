@@ -1,7 +1,7 @@
 """
-Competitive Analysis: H2QEC + Alpha Integration vs. State-of-the-Art
+Competitive Analysis: H2QEC + Control-Layer Augmentation vs. State-of-the-Art
 
-Analyzes value-add of 5-tuple hysteresis error correction with Alpha integration
+Analyzes value-add of 5-tuple hysteresis error correction with a control-layer augmentation
 compared to competitors (IBM 156-qubit, Google, etc.) on fidelity and coherence metrics.
 
 Task Class: Surface-code style QEC for sampling, variational algorithms (VQE),

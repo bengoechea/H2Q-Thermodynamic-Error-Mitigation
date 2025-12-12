@@ -141,7 +141,7 @@ This submission includes quantum error correction circuits implementing H²QEC (
 
 **Key Features:**
 - Domain-specific asymmetric thresholds (κ\_QEC for QEC)
-- Dwell-time enforcement (τ = 60-300 seconds)
+- Dwell-time / persistence enforcement (calibration-dependent; details withheld in public repo)
 - Hardware-validated on 156-qubit and 133-qubit systems
 - Patent-pending technology (US App. 63/927,371)
 

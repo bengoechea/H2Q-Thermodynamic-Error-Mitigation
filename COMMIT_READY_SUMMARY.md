@@ -69,10 +69,10 @@ competitive_analysis/
 ## Recommended Commit Message
 
 ```
-feat: Add competitive analysis framework for H2QEC + Alpha integration
+feat: Add competitive analysis framework for H2QEC + control-layer augmentation
 
 - Add competitive_analysis package with QOBLIB-aligned metrics
-- Compare H2QEC + Alpha vs IBM, Google, IonQ on fidelity/coherence
+- Compare H2QEC + control-layer augmentation vs IBM, Google, IonQ on fidelity/coherence
 - Include hardware-validated results and public parameter sources
 - Support utility-scale metrics (effective circuit depth, qubit gain)
 - Align with Quantum Advantage demonstration requirements
@@ -110,7 +110,7 @@ Verified: All tests pass, no sensitive data, appropriate for public repo
 
 4. **Commit:**
    ```bash
-   git commit -m "feat: Add competitive analysis framework for H2QEC + Alpha integration"
+   git commit -m "feat: Add competitive analysis framework for H2QEC + control-layer augmentation"
    ```
 
 ## Summary

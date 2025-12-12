@@ -40,8 +40,8 @@
       "expected_runtime": "30-60 minutes",
       "h2qec_features": {
         "hysteresis_detection": true,
-        "dwell_time_threshold": "τ (configurable; measured in rounds/cycles)",
-        "asymmetric_threshold": "κ_QEC (domain-calibrated)",
+        "dwell_time_threshold": "persistence gating (calibration-dependent; withheld in public repo)",
+        "asymmetric_threshold": "asymmetric decision thresholds (calibration-dependent; withheld in public repo)",
         "syndrome_filtering": true,
         "false_positive_reduction_target": "79.7%"
       },
@@ -74,8 +74,8 @@
       "expected_runtime": "1-2 minutes",
       "h2qec_features": {
         "hysteresis_detection": true,
-        "dwell_time_threshold": "τ (configurable; measured in rounds/cycles)",
-        "asymmetric_threshold": "κ_QEC (domain-calibrated)",
+        "dwell_time_threshold": "persistence gating (calibration-dependent; withheld in public repo)",
+        "asymmetric_threshold": "asymmetric decision thresholds (calibration-dependent; withheld in public repo)",
         "syndrome_filtering": true,
         "minimal_overhead": true,
         "false_positive_reduction_target": "79.7%"
@@ -108,8 +108,8 @@
       "expected_runtime": "5-10 minutes",
       "h2qec_features": {
         "hysteresis_detection": true,
-        "dwell_time_threshold": "τ (configurable; measured in rounds/cycles)",
-        "asymmetric_threshold": "κ_QEC (domain-calibrated)",
+        "dwell_time_threshold": "persistence gating (calibration-dependent; withheld in public repo)",
+        "asymmetric_threshold": "asymmetric decision thresholds (calibration-dependent; withheld in public repo)",
         "syndrome_filtering": true,
         "error_correction": true,
         "false_positive_reduction_target": "79.7%"
@@ -186,15 +186,15 @@
   ],
   "h2qec_parameters": {
     "domain": "Quantum Error Correction (QEC)",
-    "kappa_value": "κ_QEC (domain-calibrated)",
+    "kappa_value": "calibration-dependent (withheld in public repo)",
     "kappa_basis": "Derived from measurement disturbance in quantum error correction",
     "kappa_source": "Patent filings (US App. 63/927,371)",
     "dwell_time_range": "τ (configurable; measured in rounds/cycles)",
     "dwell_time_purpose": "Minimum duration for error persistence before triggering correction",
     "asymmetric_thresholds": {
-      "theta_up": "θ_up = θ_base × κ",
-      "theta_down": "θ_down = θ_base / κ",
-      "purpose": "Creates hysteresis loop that resists premature state transitions"
+      "theta_up": "asymmetric upper decision boundary (calibration-dependent; withheld)",
+      "theta_down": "asymmetric lower decision boundary (calibration-dependent; withheld)",
+      "purpose": "Creates a hysteresis loop that resists premature state transitions"
     },
     "hysteresis_gate": {
       "type": "Dual-threshold Boolean state machine",
@@ -253,9 +253,9 @@
     "hysteresis_gate": {
       "description": "Dual-threshold system with asymmetric thresholds",
       "formula": {
-        "theta_up": "θ_up = θ_base × κ",
-        "theta_down": "θ_down = θ_base / κ",
-        "kappa": "κ_QEC (domain-calibrated)"
+        "theta_up": "asymmetric upper decision boundary (calibration-dependent; withheld)",
+        "theta_down": "asymmetric lower decision boundary (calibration-dependent; withheld)",
+        "kappa": "calibration-dependent (withheld in public repo)"
       }
     },
     "dwell_time_enforcement": {

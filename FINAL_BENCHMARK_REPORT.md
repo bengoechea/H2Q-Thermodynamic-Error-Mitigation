@@ -196,5 +196,5 @@ Successfully executed the official IBM Quantum Advantage Tracker benchmark circu
 **Report Date**: December 5, 2025  
 **Patent Reference**: US Provisional 63/927,371  
 **Contact**: ken@kenmendoza.com  
-**Repository**: https://github.com/bengoechea/H2Q-Thermodynamic-Error-Mitigation
+**Repository**: https://github.com/bengoechea/QEC-IBM-Quantum-Advantage
 
