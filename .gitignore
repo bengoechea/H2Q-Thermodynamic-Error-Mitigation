@@ -177,6 +177,12 @@ competitive_analysis_data.json
 **/competitive_analysis/*_report.txt
 **/competitive_analysis/*_data.json
 
+# Competitive analysis local artifacts (generated/duplicate)
+competitive_analysis/CHARTS_SUMMARY.md
+competitive_analysis/CHART_IMPROVEMENTS.md
+competitive_analysis/PERPLEXITY_RADAR_CHART_VERIFICATION.md
+competitive_analysis/competitive_analysis/
+
 # OS
 .DS_Store
 Thumbs.db
