@@ -11,8 +11,8 @@
 H²Q Thermodynamic Error Mitigation has been validated on IBM Quantum hardware with **15 consecutive successful runs** across multiple backends, demonstrating:
 
 - **79.7% reduction** in syndrome false positives
-- **97.63% logical fidelity** post-mitigation
-- **895.72% average improvement** across stabilizer codes
+- **97.36% logical fidelity** (decoded success probability on primary QEC FP job)
+- **895.72%–895.73% cross-code improvement** (see “Cross-Code Performance” for definition and reproducibility)
 - **r = 0.434 correlation** between dwell time (τ) and Holevo information (χ)
 
 ---
@@ -47,7 +47,32 @@ H²Q Thermodynamic Error Mitigation has been validated on IBM Quantum hardware w
 
 ### Cross-Code Performance
 
-The 895.72% average cross-code improvement reflects H²Q's ability to enhance syndrome decoding across different stabilizer code families without code-specific tuning.
+The “cross-code improvement” figure is a **relative gain metric** computed across multiple code families using an explicitly stated formula and an explicit input table.
+
+**Operational definition (reproducible):**
+- Let \(s_{base}\) be the baseline decoded success rate (percent).
+- Let \(s_{h2q}\) be the H²Q-mitigated decoded success rate (percent).
+- Define per-code improvement:
+  \[
+  I = \\frac{s_{h2q}-s_{base}}{s_{base}}\\times 100\\%
+  \]
+- Define the cross-code average as the arithmetic mean of \(I\) across codes.
+
+**Example cross-code inputs (as reported in the Run 8 summary; display-rounded):**
+- Bit-Flip: 11.40% → 95.18% (734.78% improvement)
+- Phase-Flip: 5.66% → 98.79% (1644.23% improvement)
+- 5-Repetition: 20.17% → 82.31% (308.17% improvement)
+
+**Reproducibility artifacts:**
+- Input table (includes exact values used for computation + display-rounded values): `data/qec_cross_code_improvement.json`
+- Calculator script: `tools/compute_cross_code_improvement.py`
+
+**Recompute:**
+```bash
+python3 tools/compute_cross_code_improvement.py --input data/qec_cross_code_improvement.json
+```
+
+**Result:** mean \(= 895.726667\\%\\) (rounded to 2dp: 895.73%; truncated to 2dp: 895.72%).
 
 ### Statistical Model for Combining Runs
 

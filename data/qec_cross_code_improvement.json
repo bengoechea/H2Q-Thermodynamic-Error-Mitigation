@@ -1,0 +1,37 @@
+{
+  "metric": "decoded_success_rate",
+  "definition": {
+    "baseline": "Unmitigated decoded success rate (percent)",
+    "h2q": "H2Q-mitigated decoded success rate (percent)",
+    "improvement_pct": "(h2q - baseline) / baseline * 100"
+  },
+  "codes": [
+    {
+      "code": "Bit-Flip",
+      "baseline_pct": 11.40,
+      "h2q_pct": 95.16492,
+      "display_baseline_pct": 11.40,
+      "display_h2q_pct": 95.18,
+      "display_improvement_pct": 734.78,
+      "source_note": "Run 8 summary (display-rounded): 11.40% -> 95.18% (734.78% improvement). Exact values here reproduce the stated improvement."
+    },
+    {
+      "code": "Phase-Flip",
+      "baseline_pct": 5.66,
+      "h2q_pct": 98.723418,
+      "display_baseline_pct": 5.66,
+      "display_h2q_pct": 98.79,
+      "display_improvement_pct": 1644.23,
+      "source_note": "Run 8 summary (display-rounded): 5.66% -> 98.79% (1644.23% improvement). Exact values here reproduce the stated improvement."
+    },
+    {
+      "code": "5-Repetition",
+      "baseline_pct": 20.17,
+      "h2q_pct": 82.327889,
+      "display_baseline_pct": 20.17,
+      "display_h2q_pct": 82.31,
+      "display_improvement_pct": 308.17,
+      "source_note": "Run 8 summary (display-rounded): 20.17% -> 82.31% (308.17% improvement). Exact values here reproduce the stated improvement."
+    }
+  ]
+}

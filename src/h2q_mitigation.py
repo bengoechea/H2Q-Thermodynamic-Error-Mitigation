@@ -50,8 +50,8 @@ class H2QMitigator:
     
     Validated Performance:
         - 79.7% average false positive reduction
-        - 97.63% logical state fidelity  
-        - 895.72% cross-code improvement (definition in HARDWARE_VALIDATION.md)
+        - 97.36% logical state fidelity  
+        - ~895.7% cross-code improvement (definition in HARDWARE_VALIDATION.md)
         - Tested on [[5,1,3]], [[7,1,3]], and Steane codes
     
     Example:
