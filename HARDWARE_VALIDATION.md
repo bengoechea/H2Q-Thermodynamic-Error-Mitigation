@@ -131,6 +131,32 @@ The summary value **⟨O⟩ = 0.0004 ± 0.016** reported in the README is comput
 - Input data: `data/ibm_qec/job_d4lutmiv0j9c73e5nvt0_results.json`
 - Script: `tools/analyze_ibm_qec_fp_job.py`
 
+### 1A. Baseline Comparator: Temporal Majority Vote (w)
+
+To provide a directly comparable classical baseline, we include a simple temporal smoother:
+
+- Define the binary event stream \(b_t = 1[x_t \neq 00]\).
+- For a window length \(w \ge 1\), define majority-vote output:
+  \[
+  m_t = 1\Big[\sum_{k=0}^{w-1} b_{t-k} \ge \\lceil w/2 \\rceil \Big]
+  \]
+- Count majority-vote events:
+  \[
+  \\mathrm{FP}_{mv} = \sum_t m_t,\ \ \ r_{mv}=\\mathrm{FP}_{mv}/N
+  \]
+
+**Recompute (default \(w=9\)):**
+```bash
+python3 tools/analyze_ibm_qec_fp_job.py \
+  --input data/ibm_qec/job_d4lutmiv0j9c73e5nvt0_results.json \
+  --out results/qec_fp_analysis \
+  --majority-window 9
+```
+
+**Representative output (Job `d4lutmiv0j9c73e5nvt0`, \(w=9\)):**
+- \(\mathrm{FP}_{mv}=731\) → \(r_{mv}=1.88\%\) (15.7% reduction vs baseline)
+- \(\mathrm{FP}_{h2q}=176\) → \(r_{h2q}=0.45\%\) (79.7% reduction vs baseline)
+
 ### 2. Logical Fidelity / Logical Success Probability (97.36% for primary job)
 
 **Operational definition (reproducible):** in this repository we report a **decoded logical success probability** from the run’s reported `final_data` register (not full state tomography).

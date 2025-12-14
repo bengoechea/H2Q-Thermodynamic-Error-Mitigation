@@ -13,7 +13,8 @@ Generates:
 Usage:
     python3 tools/analyze_ibm_qec_fp_job.py \\
         --input data/ibm_qec/job_d4lutmiv0j9c73e5nvt0_results.json \\
-        --out results/qec_fp_analysis
+        --out results/qec_fp_analysis \\
+        --majority-window 9
 """
 
 import json
@@ -106,7 +107,35 @@ def counts_to_time_series(counts: Dict[str, int]) -> List[str]:
     return series
 
 
-def analyze_circuit(pub_data: Dict[str, Any], h2q_filter: H2QFilter) -> Dict[str, Any]:
+def _majority_vote_stream(bits: List[int], window: int) -> List[int]:
+    """
+    Simple temporal majority vote over a sliding window on a binary stream.
+
+    Note: in this repository's preserved job artifact, we do not have per-shot
+    linkage across rounds; we treat the (deterministically ordered) per-round
+    shot stream as a sequence for the purpose of defining simple baselines.
+    """
+    if window <= 1:
+        return list(bits)
+    if window < 1:
+        raise ValueError("window must be >= 1")
+    threshold = (window + 1) // 2  # ceil(window/2)
+    out: List[int] = []
+    running = 0
+    for i, b in enumerate(bits):
+        running += b
+        # remove element exiting the window
+        if i - window >= 0:
+            running -= bits[i - window]
+            w_eff = window
+        else:
+            w_eff = i + 1
+        thr_eff = (w_eff + 1) // 2
+        out.append(1 if running >= thr_eff else 0)
+    return out
+
+
+def analyze_circuit(pub_data: Dict[str, Any], h2q_filter: H2QFilter, *, majority_window: int) -> Dict[str, Any]:
     """
     Analyzes a single circuit (PUB) by applying baseline and H2Q filtering.
     """
@@ -120,6 +149,7 @@ def analyze_circuit(pub_data: Dict[str, Any], h2q_filter: H2QFilter) -> Dict[str
 
     # Process each round
     baseline_fp_total = 0
+    majority_fp_total = 0
     h2q_fp_total = 0
     total_measurements = 0
 
@@ -133,6 +163,12 @@ def analyze_circuit(pub_data: Dict[str, Any], h2q_filter: H2QFilter) -> Dict[str
         # Baseline: Count any non-"00" as false positive
         baseline_fp = sum(1 for s in time_series if is_error_syndrome(s))
         baseline_fp_total += baseline_fp
+
+        # Majority vote baseline on the binary event stream b_t = 1[x_t != "00"]
+        bits = [1 if is_error_syndrome(s) else 0 for s in time_series]
+        maj_bits = _majority_vote_stream(bits, majority_window)
+        majority_fp = int(sum(maj_bits))
+        majority_fp_total += majority_fp
 
         # H2Q: Apply filter to each measurement
         h2q_fp = 0
@@ -156,6 +192,7 @@ def analyze_circuit(pub_data: Dict[str, Any], h2q_filter: H2QFilter) -> Dict[str
             {
                 "round": round_key,
                 "baseline_fp": baseline_fp,
+                "majority_fp": majority_fp,
                 "h2q_fp": h2q_fp,
                 "total_shots": len(time_series),
                 "reduction_pct": (
@@ -177,10 +214,16 @@ def analyze_circuit(pub_data: Dict[str, Any], h2q_filter: H2QFilter) -> Dict[str
     return {
         "pub_index": pub_data["index"],
         "baseline_fp": baseline_fp_total,
+        "majority_fp": majority_fp_total,
         "h2q_fp": h2q_fp_total,
         "total_measurements": total_measurements,
         "reduction_pct": (
             ((baseline_fp_total - h2q_fp_total) / baseline_fp_total * 100)
+            if baseline_fp_total > 0
+            else 0.0
+        ),
+        "majority_reduction_pct": (
+            ((baseline_fp_total - majority_fp_total) / baseline_fp_total * 100)
             if baseline_fp_total > 0
             else 0.0
         ),
@@ -194,6 +237,7 @@ def analyze_circuit(pub_data: Dict[str, Any], h2q_filter: H2QFilter) -> Dict[str
 def calculate_overall_metrics(circuit_results: List[Dict[str, Any]]) -> Dict[str, Any]:
     """Calculates aggregate metrics across all circuits."""
     total_baseline_fp = sum(r["baseline_fp"] for r in circuit_results)
+    total_majority_fp = sum(r.get("majority_fp", 0) for r in circuit_results)
     total_h2q_fp = sum(r["h2q_fp"] for r in circuit_results)
     total_measurements = sum(r["total_measurements"] for r in circuit_results)
 
@@ -201,11 +245,19 @@ def calculate_overall_metrics(circuit_results: List[Dict[str, Any]]) -> Dict[str
     baseline_fp_rate = (
         (total_baseline_fp / total_measurements * 100) if total_measurements > 0 else 0.0
     )
+    majority_fp_rate = (
+        (total_majority_fp / total_measurements * 100) if total_measurements > 0 else 0.0
+    )
     h2q_fp_rate = (total_h2q_fp / total_measurements * 100) if total_measurements > 0 else 0.0
 
     # Reduction
     reduction_pct = (
         ((total_baseline_fp - total_h2q_fp) / total_baseline_fp * 100)
+        if total_baseline_fp > 0
+        else 0.0
+    )
+    majority_reduction_pct = (
+        ((total_baseline_fp - total_majority_fp) / total_baseline_fp * 100)
         if total_baseline_fp > 0
         else 0.0
     )
@@ -227,10 +279,13 @@ def calculate_overall_metrics(circuit_results: List[Dict[str, Any]]) -> Dict[str
         "total_circuits": len(circuit_results),
         "total_measurements": total_measurements,
         "baseline_fp_total": total_baseline_fp,
+        "majority_fp_total": total_majority_fp,
         "h2q_fp_total": total_h2q_fp,
         "baseline_fp_rate_pct": baseline_fp_rate,
+        "majority_fp_rate_pct": majority_fp_rate,
         "h2q_fp_rate_pct": h2q_fp_rate,
         "reduction_pct": reduction_pct,
+        "majority_reduction_pct": majority_reduction_pct,
         "logical_error_rate_pct": logical_error_rate_pct,
         "logical_fidelity_pct": logical_fidelity_pct,
         "total_logical_samples": total_logical_samples,
@@ -265,9 +320,12 @@ This analysis applies the H2Q (Hysteresis-Stabilized Quantum Error Correction) f
 - **Total Circuits Analyzed:** {overall_metrics['total_circuits']}
 - **Total Syndrome Measurements:** {overall_metrics['total_measurements']:,}
 - **Baseline False Positives:** {overall_metrics['baseline_fp_total']:,}
+- **Majority-Vote Baseline False Positives:** {overall_metrics['majority_fp_total']:,}
 - **H2Q False Positives:** {overall_metrics['h2q_fp_total']:,}
 - **False Positive Reduction:** {overall_metrics['reduction_pct']:.1f}%
+- **Majority-Vote Reduction:** {overall_metrics['majority_reduction_pct']:.1f}%
 - **Baseline FP Rate:** {overall_metrics['baseline_fp_rate_pct']:.2f}%
+- **Majority-Vote FP Rate:** {overall_metrics['majority_fp_rate_pct']:.2f}%
 - **H2Q FP Rate:** {overall_metrics['h2q_fp_rate_pct']:.2f}%
 - **Logical Error Rate (final_data, aggregate):** {overall_metrics['logical_error_rate_pct']:.2f}%
 - **Logical Fidelity (final_data, aggregate):** {overall_metrics['logical_fidelity_pct']:.2f}%
@@ -319,6 +377,18 @@ This analysis applies the H2Q (Hysteresis-Stabilized Quantum Error Correction) f
 | False Positive Rate | {overall_metrics['baseline_fp_rate_pct']:.2f}% | {overall_metrics['h2q_fp_rate_pct']:.2f}% | {overall_metrics['baseline_fp_rate_pct'] - overall_metrics['h2q_fp_rate_pct']:.2f}% absolute reduction |
 | Logical Error Rate (final_data, aggregate) | - | {overall_metrics['logical_error_rate_pct']:.2f}% | - |
 | Logical Fidelity (final_data, aggregate) | - | {overall_metrics['logical_fidelity_pct']:.2f}% | - |
+
+### Baseline Comparators
+
+We include two baselines:
+- **No filtering:** \(e_t = 1[x_t \\neq 00]\).
+- **Majority vote (window = w):** on binary stream \(b_t = 1[x_t \\neq 00]\), output \(m_t\) as the majority of the most recent \(w\) samples.
+
+| Metric | Baseline | Majority Vote | H2Q Filter |
+|--------|---------|---------------|------------|
+| Total FP events | {overall_metrics['baseline_fp_total']:,} | {overall_metrics['majority_fp_total']:,} | {overall_metrics['h2q_fp_total']:,} |
+| FP rate | {overall_metrics['baseline_fp_rate_pct']:.2f}% | {overall_metrics['majority_fp_rate_pct']:.2f}% | {overall_metrics['h2q_fp_rate_pct']:.2f}% |
+| Reduction vs baseline | 0.0% | {overall_metrics['majority_reduction_pct']:.1f}% | {overall_metrics['reduction_pct']:.1f}% |
 
 ---
 
@@ -451,6 +521,12 @@ def main():
         ),
         help="Output directory for generated report/metrics JSON.",
     )
+    parser.add_argument(
+        "--majority-window",
+        type=int,
+        default=9,
+        help="Sliding window length w for the majority-vote baseline (w>=1).",
+    )
     args = parser.parse_args()
 
     print("=" * 70)
@@ -478,16 +554,21 @@ def main():
     print(f"✅ Loaded job: {job_info['job_id']} from {job_info['backend']}")
     print(f"📊 Analyzing {len(data['pubs'])} circuits...")
 
+    if args.majority_window < 1:
+        raise SystemExit("--majority-window must be >= 1")
+
     # Initialize H2Q filter
     h2q_filter = H2QFilter(theta_on=0.8, theta_off=0.3, tau=10)
 
     # Analyze each circuit
     circuit_results = []
     for pub_data in data["pubs"]:
-        result = analyze_circuit(pub_data, h2q_filter)
+        result = analyze_circuit(pub_data, h2q_filter, majority_window=args.majority_window)
         circuit_results.append(result)
         print(
-            f"  Circuit {result['pub_index']}: Baseline FP={result['baseline_fp']}, H2Q FP={result['h2q_fp']}, Reduction={result['reduction_pct']:.1f}%"
+            f"  Circuit {result['pub_index']}: Baseline FP={result['baseline_fp']}, "
+            f"Majority FP={result.get('majority_fp', 0)}, "
+            f"H2Q FP={result['h2q_fp']}, Reduction={result['reduction_pct']:.1f}%"
         )
 
     # Calculate overall metrics
@@ -497,9 +578,12 @@ def main():
     print("OVERALL RESULTS")
     print("=" * 70)
     print(f"Total Baseline FP: {overall_metrics['baseline_fp_total']:,}")
+    print(f"Total Majority FP: {overall_metrics['majority_fp_total']:,}")
     print(f"Total H2Q FP: {overall_metrics['h2q_fp_total']:,}")
     print(f"Reduction: {overall_metrics['reduction_pct']:.1f}%")
+    print(f"Majority Reduction: {overall_metrics['majority_reduction_pct']:.1f}%")
     print(f"Baseline FP Rate: {overall_metrics['baseline_fp_rate_pct']:.2f}%")
+    print(f"Majority FP Rate: {overall_metrics['majority_fp_rate_pct']:.2f}%")
     print(f"H2Q FP Rate: {overall_metrics['h2q_fp_rate_pct']:.2f}%")
     print("=" * 70)
 
