@@ -24,11 +24,13 @@ In recent years, Kenneth turned his attention to one of quantum computing's fund
 
 The innovation is elegant: just as thermodynamics provides natural constraints on physical systems, H²Q applies similar constraints to quantum computations. This helps distinguish genuine quantum advantages from computational artifacts. In benchmarking tests, the approach has demonstrated a 79.7% reduction in false positives for quantum optimization problems.
 
+More precisely (technical but plain-language): on IBM Quantum hardware, H²Q’s hysteresis-stabilized syndrome filtering reduced false-positive error detections by **79.7%** in a representative run (**867 → 176** false-positive detections, i.e., **~20% of baseline**; FP rate **2.23% → 0.45%**).
+
 ## Patent-Protected Innovation
 
 Kenneth has filed two provisional patents protecting the H²Q methodology:
-- **US Provisional Patent 63/927,371** (November 2024)
-- **US Provisional Patent 63/933,465** (December 2024)
+- **US Provisional Patent 63/927,371** (November 2025)
+- **US Provisional Patent 63/933,465** (December 2025)
 
 These patents cover the thermodynamic approach to quantum error mitigation and represent potentially valuable intellectual property in the emerging quantum computing market.
 

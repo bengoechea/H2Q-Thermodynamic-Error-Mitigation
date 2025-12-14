@@ -15,7 +15,7 @@ H²Q implements **thermodynamic error mitigation** for quantum computing, treati
 
 | Metric | Result | Hardware | Notes |
 |--------|--------|----------|-------|
-| **False Positive Reduction** | 79.7% | ibm_fez, ibm_torino | Syndrome error filtering |
+| **False-Positive Reduction (Syndrome Detections)** | 79.7% | ibm_fez, ibm_torino | Example run: 867 → 176 false-positive detections (≈20% of baseline); FP rate 2.23% → 0.45% |
 | **Logical Fidelity** | 97.63% | ibm_fez (156-qubit) | Post-mitigation |
 | **Cross-Code Improvement** | 895.72% avg | Multiple codes | vs. unmitigated baseline |
 | **Hardware Runs** | 15/15 successful | ibm_fez, ibm_torino | 100% reproducibility |
@@ -59,7 +59,7 @@ In addition to the H²Q thermodynamic error‑mitigated estimate reported here, 
 ## Current Status & Roadmap
 
 ### ✅ Validated (December 2025)
-- **QEC Performance**: 79.7% false positive reduction on IBM Eagle r3/Heron processors
+- **QEC Performance**: 79.7% reduction in false-positive syndrome detections (example run: 867 → 176; ≈20% of baseline; FP rate 2.23% → 0.45%)
 - **Hardware Validation**: 15/15 runs across ibm_fez (127-qubit) and ibm_torino backends
 - **Cross-Code Universality**: 895.72% improvement across multiple QEC codes
 - **Statistical Rigor**: 15 independent hardware runs with 100% reproducibility
