@@ -59,19 +59,71 @@ The summary value **⟨O⟩ = 0.0004 ± 0.016** reported in the README is comput
 
 ### 1. False Positive Reduction (79.7%)
 
-**What it measures:** Reduction in syndrome measurements incorrectly flagging errors that didn't occur.
+**Operational definition (reproducible):** a “false-positive syndrome detection” is counted when a measured stabilizer syndrome is non-zero in a run that is executed **without intentional data-qubit error injection** (i.e., the ideal stabilizer outcome is the all-zero syndrome each round).
 
 **Why it matters:** False positives trigger unnecessary correction operations, consuming quantum coherence time and potentially introducing new errors.
 
-**How measured:** Compare syndrome error rate with/without H²Q filtering on identical circuit executions.
+**How measured (exact counting rule used for Job `d4lutmiv0j9c73e5nvt0`):**
 
-### 2. Logical Fidelity (97.63%)
+- Let the measured 2-bit syndrome string at time index \(t\) be \(x_t \in \{00,01,10,11\}\).
+- Define the baseline event flag:
+  \[
+  e_t = \mathbf{1}[x_t \neq 00]
+  \]
+- Baseline false-positive count:
+  \[
+  \mathrm{FP}_{\mathrm{base}} = \sum_t e_t
+  \]
+- Total syndrome measurements:
+  \[
+  N = \#\{t\}
+  \]
+- Baseline false-positive rate:
+  \[
+  r_{\mathrm{base}} = \mathrm{FP}_{\mathrm{base}}/N
+  \]
 
-**What it measures:** Probability that the logical qubit state is correctly preserved after error correction cycle.
+**H²Q (hysteresis) filtered count:**
+- Convert the syndrome to a binary error indicator \(b_t = \mathbf{1}[x_t \neq 00]\).
+- Feed \(b_t\) into the hysteresis filter (dual thresholds \(\\theta_{on}, \\theta_{off}\) with dwell time \(\\tau\)); the filter outputs an active/inactive state \(f_t \in \{0,1\}\).
+- Count a filtered event when the filter is active:
+  \[
+  \mathrm{FP}_{\mathrm{h2q}} = \sum_t f_t
+  \]
+
+**Reduction:**
+\[
+\\mathrm{Reduction} = 1 - \\frac{\\mathrm{FP}_{\\mathrm{h2q}}}{\\mathrm{FP}_{\\mathrm{base}}}
+\]
+
+**Recomputed from the included job artifact:**
+- \(N = 38{,}912\) syndrome measurements
+- \(\mathrm{FP}_{\mathrm{base}} = 867\)  → \(r_{\mathrm{base}} = 2.23\%\)
+- \(\mathrm{FP}_{\mathrm{h2q}} = 176\) → \(r_{\mathrm{h2q}} = 0.45\%\)
+- Reduction \(= 79.70\%\)
+
+**Reproduction artifacts:**
+- Input data: `data/ibm_qec/job_d4lutmiv0j9c73e5nvt0_results.json`
+- Script: `tools/analyze_ibm_qec_fp_job.py`
+
+### 2. Logical Fidelity / Logical Success Probability (97.36% for primary job)
+
+**Operational definition (reproducible):** in this repository we report a **decoded logical success probability** from the run’s reported `final_data` register (not full state tomography).
 
 **Why it matters:** This is the ultimate metric for QEC—higher logical fidelity enables longer quantum computations.
 
-**How measured:** State tomography on logical qubit after H²Q-mitigated correction cycle.
+**How measured (exact rule used for Job `d4lutmiv0j9c73e5nvt0`):**
+- Let the measured `final_data` bitstring be \(y \in \{0,1\}^3\).
+- For the “no injected error” experiment, the ideal decoded logical outcome is \(y_{ideal} = 000\).
+- Define:
+  \[
+  F_{logical} = \\Pr(y = 000)
+  \]
+
+**Recomputed from the included job artifact:**
+- Total `final_data` samples: \(N_{final} = 9{,}216\)
+- Logical errors: \(243\) (bitstrings \(\neq 000\))
+- \(F_{logical} = 1 - 243/9216 = 97.36\%\)
 
 ### 3. τ-Holevo χ Correlation (r = 0.434)
 
@@ -113,11 +165,17 @@ tau = 10         # Dwell time (measurement cycles)
 - Python >= 3.10
 
 ### Reproduction Steps
+This repo contains two kinds of reproducibility:
 
-1. Clone repository
-2. Configure IBM Quantum credentials
-3. Run: `python src/experiment_runner.py --mode hardware --backend ibm_fez`
-4. Compare results to this document
+1) **Recompute the headline QEC false-positive metrics from the preserved job artifact (no IBM access needed):**
+
+```bash
+python3 tools/analyze_ibm_qec_fp_job.py \
+  --input data/ibm_qec/job_d4lutmiv0j9c73e5nvt0_results.json \
+  --out results/qec_fp_analysis
+```
+
+2) **Re-run IBM Quantum Advantage Tracker benchmarks (requires IBM access):** see `README.md`, `QUANTUM_ADVANTAGE_TRACKER_SUBMISSION_TEXT.md`, and `src/run_benchmark.py`.
 
 ### Data Availability
 
@@ -141,7 +199,11 @@ Contact: ken@kenmendoza.com
 
 ## Theoretical Foundation
 
-H²Q implements the |H−S| criterion from Koopman-von Neumann mechanics:
+**Important scope note (falsifiability):** Shannon entropy \(H(p)\) is directly computable from measurement outcomes. The von Neumann entropy \(S(\\rho)\) of a quantum state generally **is not** directly computable from a single measurement basis without additional protocols (e.g., tomography or classical shadows) or assumptions.
+
+We use the \( |H-S| \) framing as **theoretical motivation** and as part of the patent disclosure. The public, on-hardware computations in this repository rely on measurement distributions, observable estimates, and explicitly stated counting rules (above).
+
+For completeness, the definitions are:
 
 ```
 Q = 1 − |H(p) − S(ρ)| / H_max

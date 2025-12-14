@@ -16,7 +16,7 @@ H²Q implements **thermodynamic error mitigation** for quantum computing, treati
 | Metric | Result | Hardware | Notes |
 |--------|--------|----------|-------|
 | **False-Positive Reduction (Syndrome Detections)** | 79.7% | ibm_fez, ibm_torino | Example run: 867 → 176 false-positive detections (≈20% of baseline); FP rate 2.23% → 0.45% |
-| **Logical Fidelity** | 97.63% | ibm_fez (156-qubit) | Post-mitigation |
+| **Logical Fidelity (decoded success probability)** | 97.36% | ibm_fez (156-qubit) | Defined as Pr(final_data = 000) on the primary QEC FP job |
 | **Cross-Code Improvement** | 895.72% avg | Multiple codes | vs. unmitigated baseline |
 | **Hardware Runs** | 15/15 successful | ibm_fez, ibm_torino | 100% reproducibility |
 | **τ-Holevo χ Correlation** | r = 0.434 | Hardware-validated | Dwell time ↔ channel capacity |
@@ -31,6 +31,15 @@ Implementation and artifacts for **operator_loschmidt_echo_70x1872** are located
 
 
 **Primary Job ID:** `d4lutmiv0j9c73e5nvt0`
+
+**Metric definitions & recomputation:**
+- Definitions: see [HARDWARE_VALIDATION.md](HARDWARE_VALIDATION.md) (“Key Metrics Explained”)
+- Recompute the 79.7% FP reduction and 97.36% logical fidelity from the preserved job artifact:
+  ```bash
+  python3 tools/analyze_ibm_qec_fp_job.py \
+    --input data/ibm_qec/job_d4lutmiv0j9c73e5nvt0_results.json \
+    --out results/qec_fp_analysis
+  ```
 
 **All 10 Hardware Run Job IDs:**
 1. `d4ps8frher1c73bakq70` (1024 shots)

@@ -131,6 +131,9 @@ analyze_*.py
 check_*.py
 combine_*.py
 
+# Exception: public, reproducible QEC FP analysis script
+!tools/analyze_ibm_qec_fp_job.py
+
 # Removed placeholder/stub files (do not re-add)
 src/h2q_thermo.py
 src/run_experiment.py
@@ -176,6 +179,7 @@ results/ole_results_*.json
 results/tracker_submission_*.json
 results/fnmn_notebook_*.json
 results/falsification_results_*.json
+results/qec_fp_analysis/
 
 # Temporary files
 *.tmp

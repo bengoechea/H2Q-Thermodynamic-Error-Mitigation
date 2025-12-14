@@ -12,10 +12,19 @@
 | Metric | Value | Hardware | Job Reference |
 |--------|-------|----------|---------------|
 | False Positive Reduction | **79.7%** | ibm_fez, ibm_torino | d4lutmiv0j9c73e5nvt0 |
-| Logical Fidelity | **97.63%** | ibm_fez (156-qubit) | d4lutmiv0j9c73e5nvt0 |
+| Logical Fidelity (decoded success probability) | **97.36%** | ibm_fez (156-qubit) | d4lutmiv0j9c73e5nvt0 |
 | Cross-Code Improvement | **895.72%** | Multiple backends | Aggregate |
 | τ-Holevo χ Correlation | **r = 0.434** | ibm_fez | d4lutmiv0j9c73e5nvt0 |
 | Hardware Runs | **15/15** | ibm_fez, ibm_torino | 100% success |
+
+**Definitions / reproducibility:**
+- Operational definitions for “false positive” and “logical fidelity” are stated in `HARDWARE_VALIDATION.md`.
+- Recompute the primary-job metrics from the preserved job artifact:
+  ```bash
+  python3 tools/analyze_ibm_qec_fp_job.py \
+    --input data/ibm_qec/job_d4lutmiv0j9c73e5nvt0_results.json \
+    --out results/qec_fp_analysis
+  ```
 
 ### Detailed Run Log
 

@@ -16,6 +16,6 @@
   "context": {
     "purpose": "Validate H²Q pipeline scales to 70+ qubits",
     "method": "Matrix Product State (MPS) tensor network simulation",
-    "hardware_validation": "See results.md for 15 hardware runs (79.7% FP reduction, 97.63% fidelity)"
+    "hardware_validation": "See results.md for hardware runs and definitions (79.7% FP reduction, 97.36% fidelity on primary QEC FP job)"
   }
 }
